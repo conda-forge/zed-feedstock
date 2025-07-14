@@ -12,10 +12,10 @@ cargo-bundle-licenses ^
     --output THIRDPARTY.yml
 
 :: Build package
-cargo build --release --package zed --package cli --target %CARGO_BUILD_TARGET%
+cargo build --release --package zed --package cli
 
 :: Install package
 mkdir "%LIBRARY_BIN%"
-ren target/%CARGO_BUILD_TARGET%/release/cli "%LIBRARY_BIN%/zed"
+ren target/release/cli "%LIBRARY_BIN%/zed"
 mkdir "%LIBRARY_LIB%/zed"
-ren target/%CARGO_BUILD_TARGET%/release/zed "%LIBRARY_LIB%/zed/zed-editor"
+ren target/release/zed "%LIBRARY_LIB%/zed/zed-editor"
