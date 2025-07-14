@@ -7,13 +7,18 @@ package:
   version: ${{ version }}
 
 source:
-  - url: https://github.com/zed-industries/zed/archive/v${{ version }}.tar.gz
-    sha256: 6df427063e8bf965a6e32f48dc62c7be7d53f6c8d61afae67e793fa4b727aa81
+  # The tar.gz archive contains symlinks which are not supported on Windows.
+  # Therefore, we use a zip archive for Windows and a tar.gz archive for other platforms
+  - if: win
+    then:
+      - url: https://github.com/zed-industries/zed/archive/refs/tags/v${{ version }}.zip
+        sha256: e063e6266c27e57165c7375072cf739f51d86ec8bef90d946cda6d01df1dd3c5
+    else:
+      - url: https://github.com/zed-industries/zed/archive/v${{ version }}.tar.gz
+        sha256: 6df427063e8bf965a6e32f48dc62c7be7d53f6c8d61afae67e793fa4b727aa81
 
 build:
   number: 3
-  skip:
-    - win
 
 requirements:
   build:
@@ -66,3 +71,4 @@ extra:
   recipe-maintainers:
     - lucascolley
     - Hofer-Julian
+    - baszalmstra
