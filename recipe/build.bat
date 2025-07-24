@@ -4,7 +4,7 @@ pushd zed-%PKG_VERSION%
 
 :: Make sure git can use long paths
 :: This is necessary for Windows builds with long paths
-git config --system core.longpaths true
+git config --global core.longpaths true
 
 :: Set Cargo build profile
 :: LTO=thin is already the default, and fat just takes too much memory
