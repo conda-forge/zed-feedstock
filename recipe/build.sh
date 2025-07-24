@@ -27,6 +27,9 @@ cargo-bundle-licenses \
     --output THIRDPARTY.yml
 export CFLAGS="$CFLAGS -D_BSD_SOURCE"
 
+# Disable auto updates
+export ZED_UPDATE_EXPLANATION='Please use your package manager to update zed from conda-forge'
+
 # Build package
 cargo build --release --package zed --package cli --target "${CARGO_BUILD_TARGET}"
 
