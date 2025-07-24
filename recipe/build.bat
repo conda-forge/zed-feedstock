@@ -13,7 +13,8 @@ md "%CARGO_HOME%"
 set CARGO_PROFILE_RELEASE_STRIP=symbols
 
 :: Some libraries require static linking on Windows
-set RUSTFLAGS="-C target-feature=+crt-static"
+:: HACK: we dont want to do this on conda-forge so we should figure out how to remove this.
+set RUSTFLAGS=-C target-feature=+crt-static
 
 :: Check licenses
 cargo-bundle-licenses ^
