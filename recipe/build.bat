@@ -12,6 +12,9 @@ md "%CARGO_HOME%"
 :: LTO=thin is already the default, and fat just takes too much memory
 set CARGO_PROFILE_RELEASE_STRIP=symbols
 
+:: Some libraries require static linking on Windows
+set RUSTFLAGS="-C target-feature=+crt-static"
+
 :: Check licenses
 cargo-bundle-licenses ^
     --format yaml ^
