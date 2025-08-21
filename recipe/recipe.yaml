@@ -17,7 +17,8 @@ build:
 
 requirements:
   build:
-    - ${{ compiler('rust') }}
+    # TODO: move back to ${{ compiler('rust') }}
+    - rust=1.86 
     - ${{ compiler('c') }}
     - ${{ stdlib('c') }}
     - ${{ compiler('cxx') }}
