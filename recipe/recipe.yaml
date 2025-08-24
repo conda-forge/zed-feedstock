@@ -12,12 +12,10 @@ source:
 
 build:
   number: 0
-  skip:
-    - win
 
 requirements:
   build:
-    - ${{ compiler('rust') }}
+    - ${{ compiler('rust') }} >=1.88 # its pulling 1.77 otherwise
     - ${{ compiler('c') }}
     - ${{ stdlib('c') }}
     - ${{ compiler('cxx') }}
@@ -45,6 +43,9 @@ requirements:
         - xorg-xproto
         - xorg-kbproto
         - libxkbcommon
+    - if: win
+      then:
+        - libssh2
 
 tests:
   - script:
@@ -66,3 +67,4 @@ extra:
   recipe-maintainers:
     - lucascolley
     - Hofer-Julian
+    - zelosleone
