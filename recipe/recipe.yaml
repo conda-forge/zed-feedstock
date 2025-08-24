@@ -25,6 +25,7 @@ requirements:
     - if: win
       then:
         - libssh2
+        - libgit2
 
   host:
     - if: linux
@@ -49,6 +50,13 @@ requirements:
     - if: win
       then:
         - libssh2
+        - libgit2
+
+  run:
+    - if: win
+      then:
+        - libssh2
+        - libgit2
 
 tests:
   - script:

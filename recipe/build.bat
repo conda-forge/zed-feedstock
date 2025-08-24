@@ -39,6 +39,21 @@ set AWS_LC_SYS_STATIC=0
 REM Enable proper Spectre mitigations with /Qspectre, zed uses spectre mitigations so better to compile all their code like this
 set CL=/Qspectre %CL%
 
+REM Ensure libssh2 library can be found by the linker
+set LIB=%BUILD_PREFIX%\Library\lib;%LIB%
+set LIBPATH=%BUILD_PREFIX%\Library\lib;%LIBPATH%
+
+REM Set PKG_CONFIG_PATH for finding libssh2.pc
+set PKG_CONFIG_PATH=%BUILD_PREFIX%\Library\lib\pkgconfig;%PKG_CONFIG_PATH%
+
+REM Set environment variables for libssh2
+set LIBSSH2_SYS_USE_PKG_CONFIG=1
+
+REM Debug: List contents of Library\lib to verify libssh2 is available
+echo Checking for libssh2 in %BUILD_PREFIX%\Library\lib:
+dir "%BUILD_PREFIX%\Library\lib\*ssh*" 2>nul || echo No ssh libraries found
+dir "%BUILD_PREFIX%\Library\lib\*git*" 2>nul || echo No git libraries found
+
 cargo-bundle-licenses --format yaml --output THIRDPARTY.yml
 cargo build --release --package zed --package cli --jobs 1
 
