@@ -22,6 +22,9 @@ requirements:
     - cargo-bundle-licenses
     - pkg-config
     - cmake
+    - if: win
+      then:
+        - libssh2
 
   host:
     - if: linux
