@@ -13,8 +13,8 @@ set CARGO_TARGET_DIR=C:\b
 REM Enable incremental compilation to reduce memory usage
 set CARGO_INCREMENTAL=1
 
-REM Limit parallel jobs to prevent memory exhaustion
-set CARGO_BUILD_JOBS=2
+REM Reduce parallel jobs to minimize memory usage (was 2, now 1)
+set CARGO_BUILD_JOBS=1
 
 REM Fix Windows long path issues by setting short CARGO_HOME
 set CARGO_HOME=C:\c
@@ -23,7 +23,7 @@ REM Create cargo config to use short paths and optimize memory usage
 if not exist "%SRC_DIR%\.cargo" mkdir "%SRC_DIR%\.cargo"
 echo [build] > "%SRC_DIR%\.cargo\config.toml"
 echo target-dir = "C:\\b" >> "%SRC_DIR%\.cargo\config.toml"
-echo jobs = 2 >> "%SRC_DIR%\.cargo\config.toml"
+echo jobs = 1 >> "%SRC_DIR%\.cargo\config.toml"
 echo incremental = true >> "%SRC_DIR%\.cargo\config.toml"
 echo [registries.crates-io] >> "%SRC_DIR%\.cargo\config.toml"
 echo protocol = "sparse" >> "%SRC_DIR%\.cargo\config.toml"
@@ -40,7 +40,7 @@ REM Enable proper Spectre mitigations with /Qspectre, zed uses spectre mitigatio
 set CL=/Qspectre %CL%
 
 cargo-bundle-licenses --format yaml --output THIRDPARTY.yml
-cargo build --release --package zed --package cli --jobs 2
+cargo build --release --package zed --package cli --jobs 1
 
 mkdir "%PREFIX%\bin"
 mkdir "%PREFIX%\lib\zed"
