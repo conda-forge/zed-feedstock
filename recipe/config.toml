@@ -1,0 +1,9 @@
+[build]
+target-dir = "C:\\b"
+jobs = 1
+
+[registries.crates-io]
+protocol = "sparse"
+
+[net]
+git-fetch-with-cli = true

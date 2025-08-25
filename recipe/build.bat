@@ -10,9 +10,6 @@ set CARGO_PROFILE_RELEASE_STRIP=symbols
 set ZED_UPDATE_EXPLANATION=Please use your package manager to update zed from conda-forge
 set CARGO_TARGET_DIR=C:\b
 
-REM Enable incremental compilation to reduce memory usage
-set CARGO_INCREMENTAL=1
-
 REM Reduce parallel jobs to minimize memory usage (was 2, now 1)
 set CARGO_BUILD_JOBS=1
 
@@ -21,17 +18,8 @@ set CARGO_HOME=C:\c
 
 REM Create cargo config to use short paths and optimize memory usage
 if not exist "%SRC_DIR%\.cargo" mkdir "%SRC_DIR%\.cargo"
-echo [build] > "%SRC_DIR%\.cargo\config.toml"
-echo target-dir = "C:\\b" >> "%SRC_DIR%\.cargo\config.toml"
-echo jobs = 1 >> "%SRC_DIR%\.cargo\config.toml"
-echo incremental = true >> "%SRC_DIR%\.cargo\config.toml"
-echo [registries.crates-io] >> "%SRC_DIR%\.cargo\config.toml"
-echo protocol = "sparse" >> "%SRC_DIR%\.cargo\config.toml"
-echo [net] >> "%SRC_DIR%\.cargo\config.toml"
-echo git-fetch-with-cli = true >> "%SRC_DIR%\.cargo\config.toml"
+copy "%RECIPE_DIR%\config.toml" "%SRC_DIR%\.cargo\config.toml"
 
-REM Enable Windows long path support
-reg add "HKLM\SYSTEM\CurrentControlSet\Control\FileSystem" /v LongPathsEnabled /t REG_DWORD /d 1 /f >nul 2>&1
 
 REM Configure aws-lc-sys to use dynamic CRT instead of static otherwise we are getting linking errors
 set AWS_LC_SYS_STATIC=0
@@ -41,10 +29,6 @@ set CL=/Qspectre %CL%
 
 REM Ensure libssh2 library can be found by the linker
 set LIB=%BUILD_PREFIX%\Library\lib;%LIB%
-set LIBPATH=%BUILD_PREFIX%\Library\lib;%LIBPATH%
-
-REM Set PKG_CONFIG_PATH for finding libssh2.pc
-set PKG_CONFIG_PATH=%BUILD_PREFIX%\Library\lib\pkgconfig;%PKG_CONFIG_PATH%
 
 REM Set environment variables for libssh2
 set LIBSSH2_SYS_USE_PKG_CONFIG=1
@@ -55,7 +39,7 @@ dir "%BUILD_PREFIX%\Library\lib\*ssh*" 2>nul || echo No ssh libraries found
 dir "%BUILD_PREFIX%\Library\lib\*git*" 2>nul || echo No git libraries found
 
 cargo-bundle-licenses --format yaml --output THIRDPARTY.yml
-cargo build --release --package zed --package cli --jobs 1
+cargo build --release --package zed --package cli
 
 mkdir "%PREFIX%\bin"
 mkdir "%PREFIX%\lib\zed"
