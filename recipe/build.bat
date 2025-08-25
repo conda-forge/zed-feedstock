@@ -38,8 +38,10 @@ cargo-bundle-licenses --format yaml --output THIRDPARTY.yml
 cargo build --release --package zed --package cli
 
 mkdir "%PREFIX%\bin"
+mkdir "%PREFIX%\Library\bin"
 mkdir "%PREFIX%\lib\zed"
-copy "C:\b\release\cli.exe" "%PREFIX%\bin\zed.exe"
+rem Install CLI to Library\bin so `zed` is on PATH in conda Windows envs
+copy "C:\b\release\cli.exe" "%PREFIX%\Library\bin\zed.exe"
 copy "C:\b\release\zed.exe" "%PREFIX%\lib\zed\zed-editor.exe"
 
 rmdir /s /q C:\b
