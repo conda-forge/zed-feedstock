@@ -26,6 +26,11 @@ set AWS_LC_SYS_STATIC=0
 set LIBSSH2_STATIC=0
 set LIBGIT2_SYS_USE_PKG_CONFIG=0
 
+REM Ensure the MSVC import library name matches what Rust expects (ssh2.lib vs libssh2.lib)
+if exist "%PREFIX%\Library\lib\libssh2.lib" (
+  if not exist "%PREFIX%\Library\lib\ssh2.lib" copy "%PREFIX%\Library\lib\libssh2.lib" "%PREFIX%\Library\lib\ssh2.lib"
+)
+
 REM Enable proper Spectre mitigations with /Qspectre, zed uses spectre mitigations so better to compile all their code like this
 set CL=/Qspectre %CL%
 

@@ -6,3 +6,5 @@ c_compiler:                # [win]
   - vs2022                 # [win]
 cxx_compiler:              # [win]
   - vs2022                 # [win]
+rust_compiler_version:
+  - "1.89"
