@@ -34,6 +34,12 @@ if exist "%PREFIX%\Library\lib\libssh2.lib" (
 REM Enable proper Spectre mitigations with /Qspectre, zed uses spectre mitigations so better to compile all their code like this
 set CL=/Qspectre %CL%
 
+REM Use dynamic MSVC runtime to match conda-forge policy and avoid MT/MD mismatch
+set RUSTFLAGS=
+set CRT_STATIC=0
+set CMAKE_POLICY_DEFAULT_CMP0091=NEW
+set CMAKE_MSVC_RUNTIME_LIBRARY=MultiThreadedDLL
+
 cargo-bundle-licenses --format yaml --output THIRDPARTY.yml
 cargo build --release --package zed --package cli
 
