@@ -24,7 +24,7 @@ REM Enable proper Spectre mitigations with /Qspectre, zed uses spectre mitigatio
 set CL=/Qspectre %CL%
 
 cargo-bundle-licenses --format yaml --output THIRDPARTY.yml
-cargo build --release --package zed --package cli
+cargo build --release --locked --package zed --package cli
 
 mkdir "%PREFIX%\bin"
 mkdir "%PREFIX%\Library\bin"
