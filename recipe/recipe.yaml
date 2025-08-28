@@ -25,6 +25,7 @@ requirements:
     - if: win
       then:
         - vc14_runtime
+        - nasm
         - lld
         - libssh2
         - libgit2
@@ -52,6 +53,7 @@ requirements:
     - if: win
       then:
         - vc14_runtime
+        - nasm
         - lld
         - libssh2
         - libgit2
