@@ -24,6 +24,7 @@ requirements:
     - cmake
     - if: win
       then:
+        - lld
         - libssh2
         - libgit2
 
@@ -49,12 +50,7 @@ requirements:
         - libxkbcommon
     - if: win
       then:
-        - libssh2
-        - libgit2
-
-  run:
-    - if: win
-      then:
+        - lld
         - libssh2
         - libgit2
 
