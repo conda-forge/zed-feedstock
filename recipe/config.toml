@@ -25,4 +25,8 @@ rustflags = [
     "windows_slim_errors",
     "-C",
     "target-feature=+crt-static",
+    "-C",
+    "link-arg=/NODEFAULTLIB:MSVCRTD",
+    "-C",
+    "link-arg=/NODEFAULTLIB:msvcrtd.lib",
 ]
