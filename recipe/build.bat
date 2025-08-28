@@ -20,25 +20,11 @@ REM Create cargo config to use short paths and optimize memory usage
 if not exist "%SRC_DIR%\.cargo" mkdir "%SRC_DIR%\.cargo"
 copy "%RECIPE_DIR%\config.toml" "%SRC_DIR%\.cargo\config.toml"
 
-
-REM Configure aws-lc-sys and libssh2 to use dynamic CRT instead of static otherwise we are getting linking errors
-set AWS_LC_SYS_STATIC=0
-set LIBSSH2_STATIC=0
-set LIBGIT2_SYS_USE_PKG_CONFIG=0
-
-REM Ensure the MSVC import library name matches what Rust expects (ssh2.lib vs libssh2.lib)
-if exist "%PREFIX%\Library\lib\libssh2.lib" (
-  if not exist "%PREFIX%\Library\lib\ssh2.lib" copy "%PREFIX%\Library\lib\libssh2.lib" "%PREFIX%\Library\lib\ssh2.lib"
-)
-
 REM Enable proper Spectre mitigations with /Qspectre, zed uses spectre mitigations so better to compile all their code like this
 set CL=/Qspectre %CL%
 
-REM Use dynamic MSVC runtime to match conda-forge policy and avoid MT/MD mismatch
-set RUSTFLAGS=
-set CRT_STATIC=0
-set CMAKE_POLICY_DEFAULT_CMP0091=NEW
-set CMAKE_MSVC_RUNTIME_LIBRARY=MultiThreadedDLL
+REM Force static MSVC CRT via Rust flags
+set RUSTFLAGS=-Ctarget-feature=+crt-static %RUSTFLAGS%
 
 cargo-bundle-licenses --format yaml --output THIRDPARTY.yml
 cargo build --release --package zed --package cli
