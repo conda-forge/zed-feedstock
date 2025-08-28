@@ -24,7 +24,7 @@ REM Enable proper Spectre mitigations with /Qspectre, zed uses spectre mitigatio
 set CL=/Qspectre %CL%
 
 REM Force static MSVC CRT via Rust flags
-set RUSTFLAGS=-Ctarget-feature=+crt-static %RUSTFLAGS%
+set RUSTFLAGS=-Ctarget-feature=+crt-static
 
 cargo-bundle-licenses --format yaml --output THIRDPARTY.yml
 cargo build --release --package zed --package cli
