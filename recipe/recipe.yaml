@@ -24,6 +24,7 @@ requirements:
     - cmake
     - if: win
       then:
+        - vc14_runtime
         - lld
         - libssh2
         - libgit2
@@ -50,6 +51,7 @@ requirements:
         - libxkbcommon
     - if: win
       then:
+        - vc14_runtime
         - lld
         - libssh2
         - libgit2
