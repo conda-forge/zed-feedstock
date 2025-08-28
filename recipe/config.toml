@@ -19,11 +19,10 @@ protocol = "sparse"
 git-fetch-with-cli = true
 
 [target.'cfg(target_os = "windows")']
+linker = "lld"
 rustflags = [
     "--cfg",
     "windows_slim_errors",
     "-C",
     "target-feature=+crt-static",
-    "-C",
-    "link-arg=-fuse-ld=lld",
 ]
