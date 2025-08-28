@@ -17,3 +17,13 @@ protocol = "sparse"
 
 [net]
 git-fetch-with-cli = true
+
+[target.'cfg(target_os = "windows")']
+rustflags = [
+    "--cfg",
+    "windows_slim_errors",
+    "-C",
+    "target-feature=+crt-static",
+    "-C",
+    "link-arg=-fuse-ld=lld",
+]
