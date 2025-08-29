@@ -26,5 +26,5 @@ rustflags = [
     "-C",
     "target-feature=+crt-static", # This fixes the linking issue when compiling livekit on Windows
     "-C",
-    "link-arg=-fuse-ld=lld",
+    "link-arg=/NODEFAULTLIB:MSVCRTD", # Explicitly exclude debug runtime to avoid conflicts
 ]
