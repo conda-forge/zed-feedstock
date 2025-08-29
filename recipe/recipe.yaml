@@ -16,19 +16,22 @@ build:
 requirements:
   build:
     - ${{ compiler('rust') }}
-    - ${{ compiler('c') }}
     - ${{ stdlib('c') }}
-    - ${{ compiler('cxx') }}
     - cargo-bundle-licenses
     - pkg-config
     - cmake
     - if: win
       then:
+        - ${{ compiler('m2w64_c') }}
+        - ${{ compiler('m2w64_cxx') }}
         - m2w64-gcc-libs
         - nasm
         - lld
         - libssh2
         - libgit2
+      else:
+        - ${{ compiler('c') }}
+        - ${{ compiler('cxx') }}
 
   host:
     - if: linux
