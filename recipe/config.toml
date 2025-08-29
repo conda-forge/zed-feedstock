@@ -23,8 +23,4 @@ git-fetch-with-cli = true
 rustflags = [
     "--cfg",
     "windows_slim_errors",        # This cfg will reduce the size of `windows::core::Error` from 16 bytes to 4 bytes
-    "-C",
-    "target-feature=+crt-static", # This fixes the linking issue when compiling livekit on Windows
-    "-C",
-    "link-arg=/NODEFAULTLIB:MSVCRTD", # Explicitly exclude debug runtime to avoid conflicts
 ]
