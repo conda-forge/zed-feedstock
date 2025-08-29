@@ -23,6 +23,9 @@ copy "%RECIPE_DIR%\config.toml" "%SRC_DIR%\.cargo\config.toml"
 REM Enable proper Spectre mitigations with /Qspectre, zed uses spectre mitigations so better to compile all their code like this
 set CL=/Qspectre %CL%
 
+REM Fix ssh2 library name mismatch - Rust expects ssh2.lib but conda-forge provides libssh2.lib
+copy "%LIBRARY_LIB%\libssh2.lib" "%LIBRARY_LIB%\ssh2.lib"
+
 cargo-bundle-licenses --format yaml --output THIRDPARTY.yml
 cargo build --release --locked --package zed --package cli
 
