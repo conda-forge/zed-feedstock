@@ -24,7 +24,7 @@ requirements:
     - cmake
     - if: win
       then:
-        - vc14_runtime
+        - m2w64-gcc-libs
         - nasm
         - lld
         - libssh2
@@ -52,7 +52,7 @@ requirements:
         - libxkbcommon
     - if: win
       then:
-        - vc14_runtime
+        - m2w64-gcc-libs
         - nasm
         - lld
         - libssh2
