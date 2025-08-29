@@ -23,4 +23,6 @@ git-fetch-with-cli = true
 rustflags = [
     "--cfg",
     "windows_slim_errors",        # This cfg will reduce the size of `windows::core::Error` from 16 bytes to 4 bytes
+    "-C", "link-arg=/DEFAULTLIB:msvcrt.lib",  # Force dynamic runtime library (MD) for all components
+    "-C", "link-arg=/NODEFAULTLIB:libcmt.lib", # Exclude static runtime to prevent conflicts
 ]
