@@ -1,4 +1,5 @@
 [build]
+rustflags = ["-C", "symbol-mangling-version=v0", "--cfg", "tokio_unstable"]
 target-dir = "C:\\b"
 jobs = 1
 
@@ -17,3 +18,13 @@ protocol = "sparse"
 
 [net]
 git-fetch-with-cli = true
+
+[target.'cfg(target_os = "windows")']
+rustflags = [
+    "--cfg",
+    "windows_slim_errors",        # This cfg will reduce the size of `windows::core::Error` from 16 bytes to 4 bytes
+    "-C",
+    "target-feature=+crt-static", # This fixes the linking issue when compiling livekit on Windows
+    "-C",
+    "link-arg=-fuse-ld=lld",
+]
