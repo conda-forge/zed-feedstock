@@ -33,7 +33,14 @@ rustflags = [
 # Force all C/C++ compilation to use dynamic runtime library
 CC_x86_64_pc_windows_msvc_CFLAGS = "/MD"
 CXX_x86_64_pc_windows_msvc_CXXFLAGS = "/MD"
+CFLAGS = "/MD"
+CXXFLAGS = "/MD"
 # Set VCPKG linkage for consistent runtime across native dependencies
 VCPKG_CRT_LINKAGE = "dynamic"
 # Force CMake to use dynamic runtime
 CMAKE_MSVC_RUNTIME_LIBRARY = "MultiThreadedDLL"
+CMAKE_CXX_FLAGS = "/MD"
+CMAKE_C_FLAGS = "/MD"
+# Force webrtc-sys specific settings
+WEBRTC_SYS_CXX_FLAGS = "/MD"
+WEBRTC_SYS_C_FLAGS = "/MD"
