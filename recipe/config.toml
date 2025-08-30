@@ -1,5 +1,5 @@
 [build]
-rustflags = ["-C", "symbol-mangling-version=v0", "--cfg", "tokio_unstable"]
+rustflags = ["-C", "symbol-mangling-version=v0", "--cfg", "tokio_unstable", "-C", "target-feature=+crt-static"]
 target-dir = "C:\\b"
 jobs = 1
 
@@ -19,18 +19,7 @@ protocol = "sparse"
 [net]
 git-fetch-with-cli = true
 
-[target.'cfg(target_os = "windows")']
-rustflags = [
-    "--cfg",
-    "windows_slim_errors",
-    "-C", "link-arg=/DEFAULTLIB:msvcrt.lib",
-    "-C", "link-arg=/NODEFAULTLIB:libcmt.lib",
-    "-C", "link-arg=/NODEFAULTLIB:libcmtd.lib",
-    "-C", "link-arg=/NODEFAULTLIB:msvcrtd.lib",
-    "-C", "link-arg=ucrt.lib",
-    "-C", "link-arg=vcruntime.lib",
-]
-
 [env]
-VCPKG_CRT_LINKAGE = "dynamic"
-CMAKE_MSVC_RUNTIME_LIBRARY = "MultiThreadedDLL"
+AWS_LC_SYS_STATIC = "1"
+VCPKG_CRT_LINKAGE = "static"
+CMAKE_MSVC_RUNTIME_LIBRARY = "MultiThreaded"
