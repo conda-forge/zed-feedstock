@@ -1,0 +1,6 @@
+[build]
+target-dir = "C:\\b"
+jobs = 1
+
+[net]
+git-fetch-with-cli = true

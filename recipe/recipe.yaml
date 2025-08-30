@@ -11,19 +11,22 @@ source:
     sha256: dedc97aef20daa1c18f69f1e6e68285287bd9bcb4d07e7370d7d26452b21f2e2
 
 build:
-  number: 2
-  skip:
-    - win
+  number: 0
 
 requirements:
   build:
     - ${{ compiler('rust') }}
     - ${{ compiler('c') }}
-    - ${{ stdlib('c') }}
     - ${{ compiler('cxx') }}
+    - ${{ stdlib('c') }}
     - cargo-bundle-licenses
     - pkg-config
     - cmake
+    - if: win
+      then:
+        - nasm
+        - libssh2
+        - libgit2
 
   host:
     - if: linux
@@ -45,6 +48,11 @@ requirements:
         - xorg-xproto
         - xorg-kbproto
         - libxkbcommon
+    - if: win
+      then:
+        - nasm
+        - libssh2
+        - libgit2
 
 tests:
   - script:
@@ -66,3 +74,4 @@ extra:
   recipe-maintainers:
     - lucascolley
     - Hofer-Julian
+    - zelosleone
