@@ -8,8 +8,17 @@ copy "crates\zed\resources\app-icon.png" "%PREFIX%\Menu\zed.png"
 
 set CARGO_PROFILE_RELEASE_STRIP=symbols
 set ZED_UPDATE_EXPLANATION=Please use your package manager to update zed from conda-forge
+set CARGO_TARGET_DIR=C:\b
+
 REM Reduce parallel jobs to minimize memory usage (was 2, now 1)
 set CARGO_BUILD_JOBS=1
+
+REM Fix Windows long path issues by setting short CARGO_HOME
+set CARGO_HOME=C:\c
+
+REM Create cargo config to use short paths and optimize memory usage
+if not exist "%SRC_DIR%\.cargo" mkdir "%SRC_DIR%\.cargo"
+copy "%RECIPE_DIR%\config.toml" "%SRC_DIR%\.cargo\config.toml"
 
 REM Fix ssh2 library name mismatch - Rust expects ssh2.lib but conda-forge provides libssh2.lib
 copy "%LIBRARY_LIB%\libssh2.lib" "%LIBRARY_LIB%\ssh2.lib"
@@ -21,6 +30,10 @@ mkdir "%PREFIX%\bin"
 mkdir "%PREFIX%\Library\bin"
 mkdir "%PREFIX%\Scripts"
 mkdir "%PREFIX%\lib\zed"
-copy "%SRC_DIR%\target\release\cli.exe" "%PREFIX%\Library\bin\zed.exe"
-copy "%SRC_DIR%\target\release\cli.exe" "%PREFIX%\Scripts\zed.exe"
-copy "%SRC_DIR%\target\release\zed.exe" "%PREFIX%\lib\zed\zed-editor.exe"
+copy "C:\b\release\cli.exe" "%PREFIX%\Library\bin\zed.exe"
+copy "C:\b\release\cli.exe" "%PREFIX%\Scripts\zed.exe"
+copy "C:\b\release\zed.exe" "%PREFIX%\lib\zed\zed-editor.exe"
+
+rmdir /s /q C:\b
+rmdir /s /q C:\c
+rmdir /s /q "%SRC_DIR%\.cargo"

@@ -1,5 +1,5 @@
 [build]
-rustflags = ["-C", "symbol-mangling-version=v0", "--cfg", "tokio_unstable"]
+rustflags = ["-C", "symbol-mangling-version=v0", "--cfg", "tokio_unstable", "-C", "target-feature=+crt-static"]
 target-dir = "C:\\b"
 jobs = 1
 
@@ -19,28 +19,6 @@ protocol = "sparse"
 [net]
 git-fetch-with-cli = true
 
-[target.'cfg(target_os = "windows")']
-rustflags = [
-    "--cfg",
-    "windows_slim_errors",        # This cfg will reduce the size of `windows::core::Error` from 16 bytes to 4 bytes
-    "-C", "link-arg=/DEFAULTLIB:msvcrt.lib",  # Force dynamic runtime library (MD) for all components
-    "-C", "link-arg=/NODEFAULTLIB:libcmt.lib", # Exclude static runtime to prevent conflicts
-    "-C", "link-arg=/NODEFAULTLIB:libcmtd.lib", # Exclude debug static runtime
-    "-C", "link-arg=/NODEFAULTLIB:msvcrtd.lib", # Exclude debug dynamic runtime in release builds
-]
-
 [env]
-# Force all C/C++ compilation to use dynamic runtime library
-CC_x86_64_pc_windows_msvc_CFLAGS = "/MD"
-CXX_x86_64_pc_windows_msvc_CXXFLAGS = "/MD"
-CFLAGS = "/MD"
-CXXFLAGS = "/MD"
-# Set VCPKG linkage for consistent runtime across native dependencies
-VCPKG_CRT_LINKAGE = "dynamic"
-# Force CMake to use dynamic runtime
-CMAKE_MSVC_RUNTIME_LIBRARY = "MultiThreadedDLL"
-CMAKE_CXX_FLAGS = "/MD"
-CMAKE_C_FLAGS = "/MD"
-# Force webrtc-sys specific settings
-WEBRTC_SYS_CXX_FLAGS = "/MD"
-WEBRTC_SYS_C_FLAGS = "/MD"
+VCPKG_CRT_LINKAGE = "static"
+CMAKE_MSVC_RUNTIME_LIBRARY = "MultiThreaded"
