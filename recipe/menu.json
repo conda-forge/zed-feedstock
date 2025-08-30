@@ -7,20 +7,18 @@
       "description": "High-performance, multiplayer code editor",
       "activate": true,
       "icon": "{{ MENU_DIR }}/zed.{{ ICON_EXT }}",
-      "command": [ "" ],
+      "command": [""],
       "platforms": {
         "linux": {
-          "command": [ "{{ PREFIX }}/bin/zed", "%F" ],
+          "command": ["{{ PREFIX }}/bin/zed", "%F"],
           "StartupNotify": true,
-          "MimeType": [ "application/x-menuinst" ],
+          "MimeType": ["application/x-menuinst"],
           "glob_patterns": {
             "application/x-menuinst": "*.menuinst"
           }
         },
         "osx": {
-          "precommand": "pushd \"$(dirname \"$0\")\" &>/dev/null",
-          "command": [ "{{ PREFIX }}/bin/zed", "$@" ],
-          "CFBundleName": "Zed",
+          "command": ["{{ PREFIX }}/lib/zed/zed-editor", "$@"],
           "CFBundleIdentifier": "dev.zedapp.zed-__PKG_MAJOR_VER__-__CFBID_ENV__",
           "CFBundleVersion": "__PKG_VERSION__"
         }
