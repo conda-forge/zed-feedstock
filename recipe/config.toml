@@ -1,5 +1,7 @@
 [build]
 target-dir = "C:\\b"
+codegen-units = 1
+panic = abort
 jobs = 1
 
 [net]
