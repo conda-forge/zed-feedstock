@@ -1,5 +1,5 @@
 [build]
-rustflags = ["-C", "symbol-mangling-version=v0", "--cfg", "tokio_unstable"]
+rustflags = ["-C", "symbol-mangling-version=v0", "--cfg", "tokio_unstable", "-C", "target-feature=+crt-static"]
 target-dir = "C:\\b"
 jobs = 1
 
@@ -18,8 +18,3 @@ protocol = "sparse"
 
 [net]
 git-fetch-with-cli = true
-
-[target.'cfg(target_os = "windows")']
-rustflags = [
-    "-C", "target-feature=+crt-static"
-]
