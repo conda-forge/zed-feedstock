@@ -1,25 +1,6 @@
 [build]
-rustflags = ["-C", "symbol-mangling-version=v0", "--cfg", "tokio_unstable", "-C", "target-feature=+crt-static"]
 target-dir = "C:\\b"
 jobs = 1
 
-[profile.release]
-# Reduce optimization level to save memory (was opt-level=3)
-opt-level = 2
-# Disable LTO to reduce memory usage (was enabled)
-lto = false
-# Increase codegen units to reduce per-unit memory (was codegen-units=1)
-codegen-units = 4
-# Reduce debug info to save memory
-debug = 0
-
-[registries.crates-io]
-protocol = "sparse"
-
 [net]
 git-fetch-with-cli = true
-
-[env]
-AWS_LC_SYS_STATIC = "1"
-VCPKG_CRT_LINKAGE = "static"
-CMAKE_MSVC_RUNTIME_LIBRARY = "MultiThreaded"

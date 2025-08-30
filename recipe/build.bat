@@ -10,9 +10,6 @@ set CARGO_PROFILE_RELEASE_STRIP=symbols
 set ZED_UPDATE_EXPLANATION=Please use your package manager to update zed from conda-forge
 set CARGO_TARGET_DIR=C:\b
 
-REM Reduce parallel jobs to minimize memory usage (was 2, now 1)
-set CARGO_BUILD_JOBS=1
-
 REM Fix Windows long path issues by setting short CARGO_HOME
 set CARGO_HOME=C:\c
 
