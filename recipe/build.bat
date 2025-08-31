@@ -20,7 +20,8 @@ copy "%RECIPE_DIR%\config.toml" "%SRC_DIR%\.cargo\config.toml"
 REM Fix ssh2 library name mismatch - Rust expects ssh2.lib but conda-forge provides libssh2.lib
 copy "%LIBRARY_LIB%\libssh2.lib" "%LIBRARY_LIB%\ssh2.lib"
 
-set CMAKE_ARGS=-DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded
+set CMAKE_ARGS=-DCMAKE_BUILD_TYPE=Release -DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded
+set AWS_LC_SYS_PREBUILT_NASM=0
 cargo-bundle-licenses --format yaml --output THIRDPARTY.yml
 cargo build --release --locked --package zed --package cli
 

@@ -12,3 +12,4 @@ rustflags = [
     "-C",
     "target-feature=+crt-static", # This fixes the linking issue when compiling livekit on Windows
 ]
+debug = false
