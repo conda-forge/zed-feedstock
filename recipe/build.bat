@@ -12,6 +12,9 @@ set CARGO_TARGET_DIR=C:\b
 REM Fix Windows long path issues by setting short CARGO_HOME
 set CARGO_HOME=C:\c
 
+REM Add legacy_stdio_definitions.lib to fix aws-lc-sys missing symbols
+set RUSTFLAGS=%RUSTFLAGS% -C link-arg=legacy_stdio_definitions.lib
+
 REM Create cargo config to use short paths and optimize memory usage
 if not exist "%SRC_DIR%\.cargo" mkdir "%SRC_DIR%\.cargo"
 copy "%RECIPE_DIR%\config.toml" "%SRC_DIR%\.cargo\config.toml"
