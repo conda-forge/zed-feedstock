@@ -7,6 +7,3 @@ git-fetch-with-cli = true
 
 [target.'cfg(windows)']
 rustflags = ["-C", "target-feature=+crt-static"]
-lto = "thin"
-panic = "abort"
-debug = false
