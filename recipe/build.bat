@@ -22,14 +22,6 @@ copy "%LIBRARY_LIB%\libssh2.lib" "%LIBRARY_LIB%\ssh2.lib"
 cargo-bundle-licenses --format yaml --output THIRDPARTY.yml
 cargo build --release --locked --package zed --package cli
 
-mkdir "%PREFIX%\bin"
-mkdir "%PREFIX%\Library\bin"
-mkdir "%PREFIX%\Scripts"
-mkdir "%PREFIX%\lib\zed"
-copy "C:\b\release\cli.exe" "%PREFIX%\Library\bin\zed.exe"
-copy "C:\b\release\cli.exe" "%PREFIX%\Scripts\zed.exe"
-copy "C:\b\release\zed.exe" "%PREFIX%\lib\zed\zed-editor.exe"
-
 rmdir /s /q C:\b
 rmdir /s /q C:\c
 rmdir /s /q "%SRC_DIR%\.cargo"
