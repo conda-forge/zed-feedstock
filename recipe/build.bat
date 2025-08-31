@@ -12,9 +12,9 @@ set CARGO_TARGET_DIR=C:\b
 REM Fix Windows long path issues by setting short CARGO_HOME
 set CARGO_HOME=C:\c
 
-REM Configure aws_lc_sys for static linking compatibility
-set AWS_LC_SYS_NO_ASM=1
+REM Configure aws_lc_sys for static linking compatibility  
 set AWS_LC_SYS_STATIC=1
+set AWS_LC_SYS_PREBUILT_NASM=1
 
 REM Create cargo config to use short paths and optimize memory usage
 if not exist "%SRC_DIR%\.cargo" mkdir "%SRC_DIR%\.cargo"
