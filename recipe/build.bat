@@ -12,12 +12,7 @@ set CARGO_TARGET_DIR=C:\b
 REM Fix Windows long path issues by setting short CARGO_HOME
 set CARGO_HOME=C:\c
 
-REM Configure aws_lc_sys for static linking compatibility  
-set AWS_LC_SYS_STATIC=1
-set AWS_LC_SYS_PREBUILT_NASM=1
-set AWS_LC_SYS_CMAKE_BUILDER=1
-REM Force aws-lc-sys to use compatible C runtime library
-set AWS_LC_SYS_CMAKE_ARGS=-DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded$<$<CONFIG:Debug>:Debug> -DCMAKE_C_FLAGS=/MT -DCMAKE_CXX_FLAGS=/MT
+REM aws-lc-rs disabled via patch, using ring backend instead
 
 REM Create cargo config to use short paths and optimize memory usage
 if not exist "%SRC_DIR%\.cargo" mkdir "%SRC_DIR%\.cargo"
