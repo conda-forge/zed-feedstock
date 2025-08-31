@@ -12,8 +12,6 @@ set CARGO_TARGET_DIR=C:\b
 REM Fix Windows long path issues by setting short CARGO_HOME
 set CARGO_HOME=C:\c
 
-REM aws-lc-rs disabled via patch, using ring backend instead
-
 REM Create cargo config to use short paths and optimize memory usage
 if not exist "%SRC_DIR%\.cargo" mkdir "%SRC_DIR%\.cargo"
 copy "%RECIPE_DIR%\config.toml" "%SRC_DIR%\.cargo\config.toml"

@@ -9,9 +9,6 @@ package:
 source:
   - url: https://github.com/zed-industries/zed/archive/v${{ version }}.tar.gz
     sha256: dedc97aef20daa1c18f69f1e6e68285287bd9bcb4d07e7370d7d26452b21f2e2
-    patches:
-      - if: win
-        then: force-ring-backend.patch
 
 build:
   number: 0
@@ -32,6 +29,8 @@ requirements:
         - nasm
         - libssh2
         - libgit2
+        - ucrt
+        - vc14_runtime
 
   host:
     - if: linux
@@ -60,6 +59,8 @@ requirements:
         - nasm
         - libssh2
         - libgit2
+        - ucrt
+        - vc14_runtime
 
 tests:
   - script:
