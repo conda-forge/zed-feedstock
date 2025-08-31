@@ -6,7 +6,6 @@ mkdir "%PREFIX%\Menu"
 copy "%RECIPE_DIR%\menu.json" "%PREFIX%\Menu\%PKG_NAME%_menu.json"
 copy "crates\zed\resources\app-icon.png" "%PREFIX%\Menu\zed.png"
 
-set CARGO_PROFILE_RELEASE_STRIP=symbols
 set ZED_UPDATE_EXPLANATION=Please use your package manager to update zed from conda-forge
 set CARGO_TARGET_DIR=C:\b
 

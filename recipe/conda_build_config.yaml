@@ -1,11 +1,6 @@
-c_stdlib_version:          # [osx]
-  - "12.3"                 # [osx]
-MACOSX_SDK_VERSION:        # [osx]
-  - "12.3"                 # [osx]
+c_stdlib_version: # [osx]
+  - "12.3" # [osx]
+MACOSX_SDK_VERSION: # [osx]
+  - "12.3" # [osx]
 rust_compiler_version:
   - "1.89"
-CMAKE_ARGS:
-  - -DCMAKE_BUILD_TYPE=Release
-  - -DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded
-AWS_LC_SYS_PREBUILT_NASM:
-  - "0"
