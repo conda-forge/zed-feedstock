@@ -24,6 +24,8 @@ requirements:
     - cmake
     - if: win
       then:
+        - sqlite
+        - openssl
         - nasm
         - libssh2
         - libgit2
@@ -50,6 +52,8 @@ requirements:
         - libxkbcommon
     - if: win
       then:
+        - sqlite
+        - openssl
         - nasm
         - libssh2
         - libgit2
