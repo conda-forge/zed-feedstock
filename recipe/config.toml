@@ -5,7 +5,7 @@ jobs = 1
 [net]
 git-fetch-with-cli = true
 
-[profile.release]
+[profile.dev]
 lto = "thin"
 panic = "abort"
 debug = false
