@@ -1,11 +1,12 @@
 [build]
-target-dir = "C:\\b"
+target-dir = "C:\b"
 jobs = 1
 
 [net]
 git-fetch-with-cli = true
 
-[profile.dev]
+[target.'cfg(windows)']
+rustflags = ["-C", "target-feature=+crt-static"]
 lto = "thin"
 panic = "abort"
 debug = false

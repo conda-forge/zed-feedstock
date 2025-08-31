@@ -21,15 +21,15 @@ REM Fix ssh2 library name mismatch - Rust expects ssh2.lib but conda-forge provi
 copy "%LIBRARY_LIB%\libssh2.lib" "%LIBRARY_LIB%\ssh2.lib"
 
 cargo-bundle-licenses --format yaml --output THIRDPARTY.yml
-cargo build --locked --package zed --package cli
+cargo build --release --locked --package zed --package cli
 
 mkdir "%PREFIX%\bin"
 mkdir "%PREFIX%\Library\bin"
 mkdir "%PREFIX%\Scripts"
 mkdir "%PREFIX%\lib\zed"
-copy "C:\b\debug\cli.exe" "%PREFIX%\Library\bin\zed.exe"
-copy "C:\b\debug\cli.exe" "%PREFIX%\Scripts\zed.exe"
-copy "C:\b\debug\zed.exe" "%PREFIX%\lib\zed\zed-editor.exe"
+copy "C:\b\release\cli.exe" "%PREFIX%\Library\bin\zed.exe"
+copy "C:\b\release\cli.exe" "%PREFIX%\Scripts\zed.exe"
+copy "C:\b\release\zed.exe" "%PREFIX%\lib\zed\zed-editor.exe"
 
 rmdir /s /q C:\b
 rmdir /s /q C:\c
