@@ -20,6 +20,7 @@ REM Fix ssh2 library name mismatch - Rust expects ssh2.lib but conda-forge provi
 copy "%LIBRARY_LIB%\libssh2.lib" "%LIBRARY_LIB%\ssh2.lib"
 
 set CFLAGS=/MT
+set CMAKE_BUILD_TYPE=Release
 
 cargo-bundle-licenses --format yaml --output THIRDPARTY.yml
 cargo build --release --locked --package zed --package cli
