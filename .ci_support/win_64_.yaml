@@ -1,5 +1,5 @@
 c_compiler:
-- vs2022
+- vs2019
 c_stdlib:
 - vs
 channel_sources:
@@ -7,10 +7,12 @@ channel_sources:
 channel_targets:
 - conda-forge main
 cxx_compiler:
-- vs2022
+- vs2019
 libssh2:
 - '1'
 rust_compiler:
 - rust
+rust_compiler_version:
+- '1.89'
 target_platform:
 - win-64

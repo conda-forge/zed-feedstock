@@ -16,6 +16,8 @@ build:
 requirements:
   build:
     - ${{ compiler('rust') }}
+    - ${{ compiler('c') }}
+    - ${{ compiler('cxx') }}
     - ${{ stdlib('c') }}
     - cargo-bundle-licenses
     - pkg-config
@@ -28,11 +30,6 @@ requirements:
         - libssh2
         - libgit2
         - ucrt
-        - vc14_runtime
-        - vs2019_win-64
-      else:
-        - ${{ compiler('c') }}
-        - ${{ compiler('cxx') }}
 
   host:
     - if: linux
@@ -62,7 +59,6 @@ requirements:
         - libssh2
         - libgit2
         - ucrt
-        - vc14_runtime
 
 tests:
   - script:
