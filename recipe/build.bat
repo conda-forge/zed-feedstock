@@ -40,7 +40,7 @@ set ZED_UPDATE_EXPLANATION=Please use your package manager to update zed from co
 
 REM Use temp directory for build artifacts to avoid path length issues
 set "TEMP_BUILD_DIR=%TEMP%\zed-build-%RANDOM%"
-set "TEMP_CARGO_HOME=%TEMP%\zed-cargo-%RANDOM%"
+set "TEMP_CARGO_HOME=C:\zc%RANDOM%"
 set CARGO_TARGET_DIR=%TEMP_BUILD_DIR%
 set CARGO_HOME=%TEMP_CARGO_HOME%
 
