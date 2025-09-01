@@ -1,30 +1,121 @@
 @echo off
+setlocal enabledelayedexpansion
 
-if not exist Cargo.toml xcopy /E /I /H /Y "%SRC_DIR%\..\..\..\src_cache\test_extract\zed-%PKG_VERSION%\*" "%SRC_DIR%\"
+REM Validate required dependencies
+echo Validating build environment...
 
-mkdir "%PREFIX%\Menu"
-copy "%RECIPE_DIR%\menu.json" "%PREFIX%\Menu\%PKG_NAME%_menu.json"
-copy "crates\zed\resources\app-icon.png" "%PREFIX%\Menu\zed.png"
+REM Check for required tools
+where cargo >nul 2>&1 || (echo ERROR: cargo not found in PATH && exit /b 1)
+where cmake >nul 2>&1 || (echo ERROR: cmake not found in PATH && exit /b 1)
 
+REM Check MSVC toolchain
+if not defined VCINSTALLDIR (
+    echo ERROR: Visual Studio Build Tools not properly configured
+    echo Please run this from a Visual Studio Developer Command Prompt
+    exit /b 1
+)
+
+REM Extract source if needed
+if not exist Cargo.toml (
+    echo Extracting source files...
+    xcopy /E /I /H /Y "%SRC_DIR%\..\..\..\src_cache\test_extract\zed-%PKG_VERSION%\*" "%SRC_DIR%\" || (
+        echo ERROR: Failed to extract source files
+        exit /b 1
+    )
+)
+
+REM Create Menu directory and copy icons
+mkdir "%PREFIX%\Menu" 2>nul
+copy "%RECIPE_DIR%\menu.json" "%PREFIX%\Menu\%PKG_NAME%_menu.json" || (
+    echo ERROR: Failed to copy menu.json
+    exit /b 1
+)
+copy "crates\zed\resources\app-icon.png" "%PREFIX%\Menu\zed.png" || (
+    echo ERROR: Failed to copy app icon
+    exit /b 1
+)
+
+REM Set build environment variables
 set ZED_UPDATE_EXPLANATION=Please use your package manager to update zed from conda-forge
-set CARGO_TARGET_DIR=C:\b
 
-REM Fix Windows long path issues by setting short CARGO_HOME
-set CARGO_HOME=C:\c
+REM Use temp directory for build artifacts to avoid path length issues
+set "TEMP_BUILD_DIR=%TEMP%\zed-build-%RANDOM%"
+set "TEMP_CARGO_HOME=%TEMP%\zed-cargo-%RANDOM%"
+set CARGO_TARGET_DIR=%TEMP_BUILD_DIR%
+set CARGO_HOME=%TEMP_CARGO_HOME%
 
-REM Add legacy_stdio_definitions.lib to fix aws-lc-sys missing symbols
+echo Using temporary build directory: %CARGO_TARGET_DIR%
+echo Using temporary cargo home: %CARGO_HOME%
+
+REM Create temporary directories
+mkdir "%CARGO_TARGET_DIR%" 2>nul
+mkdir "%CARGO_HOME%" 2>nul
+
+REM Configure Rust flags for Windows with MSVC
 set RUSTFLAGS=%RUSTFLAGS% -C link-arg=legacy_stdio_definitions.lib
 
-REM Create cargo config to use short paths and optimize memory usage
+REM Create cargo config directory and copy configuration
 if not exist "%SRC_DIR%\.cargo" mkdir "%SRC_DIR%\.cargo"
-copy "%RECIPE_DIR%\config.toml" "%SRC_DIR%\.cargo\config.toml"
+copy "%RECIPE_DIR%\config.toml" "%SRC_DIR%\.cargo\config.toml" || (
+    echo ERROR: Failed to copy cargo config
+    goto cleanup_and_exit
+)
 
-REM Fix ssh2 library name mismatch - Rust expects ssh2.lib but conda-forge provides libssh2.lib
-copy "%LIBRARY_LIB%\libssh2.lib" "%LIBRARY_LIB%\ssh2.lib"
+REM Check if libssh2.lib exists before copying
+if exist "%LIBRARY_LIB%\libssh2.lib" (
+    echo Fixing ssh2 library name mismatch...
+    copy "%LIBRARY_LIB%\libssh2.lib" "%LIBRARY_LIB%\ssh2.lib" || (
+        echo WARNING: Failed to copy libssh2.lib to ssh2.lib
+    )
+) else (
+    echo WARNING: libssh2.lib not found at %LIBRARY_LIB%\libssh2.lib
+)
 
-cargo-bundle-licenses --format yaml --output THIRDPARTY.yml
-cargo build --release --locked --package zed --package cli --jobs 1
+REM Generate third-party licenses
+echo Generating third-party licenses...
+cargo-bundle-licenses --format yaml --output THIRDPARTY.yml || (
+    echo ERROR: Failed to generate third-party licenses
+    goto cleanup_and_exit
+)
 
-rmdir /s /q C:\b
-rmdir /s /q C:\c
-rmdir /s /q "%SRC_DIR%\.cargo"
+REM Build Zed with release configuration
+echo Building Zed (this may take a while)...
+cargo build --release --locked --package zed --package cli --jobs 1 || (
+    echo ERROR: Build failed
+    goto cleanup_and_exit
+)
+
+REM Copy build artifacts to target location
+echo Copying build artifacts...
+if exist "%CARGO_TARGET_DIR%\release\zed.exe" (
+    copy "%CARGO_TARGET_DIR%\release\zed.exe" "%PREFIX%\Scripts\zed.exe" || (
+        echo ERROR: Failed to copy zed.exe
+        goto cleanup_and_exit
+    )
+) else (
+    echo ERROR: zed.exe not found in build output
+    goto cleanup_and_exit
+)
+
+if exist "%CARGO_TARGET_DIR%\release\cli.exe" (
+    copy "%CARGO_TARGET_DIR%\release\cli.exe" "%PREFIX%\Scripts\zed-cli.exe" || (
+        echo ERROR: Failed to copy cli.exe
+        goto cleanup_and_exit
+    )
+) else (
+    echo WARNING: cli.exe not found in build output
+)
+
+echo Build completed successfully!
+goto cleanup_and_exit
+
+:cleanup_and_exit
+REM Cleanup temporary directories
+echo Cleaning up temporary files...
+if exist "%CARGO_TARGET_DIR%" rmdir /s /q "%CARGO_TARGET_DIR%" 2>nul
+if exist "%CARGO_HOME%" rmdir /s /q "%CARGO_HOME%" 2>nul
+if exist "%SRC_DIR%\.cargo" rmdir /s /q "%SRC_DIR%\.cargo" 2>nul
+
+REM Exit with the appropriate code
+if errorlevel 1 exit /b 1
+exit /b 0

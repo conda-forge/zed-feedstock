@@ -2,5 +2,14 @@ c_stdlib_version: # [osx]
   - "12.3" # [osx]
 MACOSX_SDK_VERSION: # [osx]
   - "12.3" # [osx]
+
+# Windows-specific build configuration
+WINSDK_VERSION: # [win]
+  - "10.0.22621.0" # [win] # Windows 11 SDK version 2104 or later
+  
+vc: # [win]
+  - "14.3" # [win] # Visual Studio 2022 Build Tools
+
+# Rust compiler version - use stable release that supports Windows MSVC
 rust_compiler_version:
   - "1.89"
