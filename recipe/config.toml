@@ -16,6 +16,8 @@ rustflags = [
     "target-feature=-crt-static", # Use dynamic CRT linking for conda compatibility
     "-C",
     "link-arg=legacy_stdio_definitions.lib",  # Fix aws-lc-sys missing symbols
+    "-C",
+    "link-arg=/QSPECTRE-",
 ]
 
 # Windows MSVC specific configuration
@@ -25,6 +27,8 @@ rustflags = [
     "windows_slim_errors",
     "-C",
     "target-feature=-crt-static",
+    "-C",
+    "link-arg=/QSPECTRE-",
     "-C",
     "link-arg=legacy_stdio_definitions.lib",
     "-C",
