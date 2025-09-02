@@ -1,5 +1,5 @@
 c_compiler:
-- m2w64-gcc
+- gcc
 c_stdlib:
 - m2w64-sysroot
 channel_sources:
@@ -7,7 +7,7 @@ channel_sources:
 channel_targets:
 - conda-forge main
 cxx_compiler:
-- m2w64-gcc
+- gxx
 libssh2:
 - '1'
 rust_compiler:
