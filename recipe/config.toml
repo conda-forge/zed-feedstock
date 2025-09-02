@@ -1,9 +1,6 @@
 [build]
 # Use environment variable for target dir to support temp directories
 target-dir = "${CARGO_TARGET_DIR}"
-# Force GNU target as default for MinGW compatibility
-default-target = "x86_64-pc-windows-gnu"
-target = "x86_64-pc-windows-gnu"
 
 [net]
 git-fetch-with-cli = true
@@ -12,6 +9,7 @@ git-fetch-with-cli = true
 codegen-units = 4
 
 [target.x86_64-pc-windows-gnu]
+linker = "x86_64-w64-mingw32-gcc"
 rustflags = [
     "--cfg",
     "windows_slim_errors",        # Reduce the size of windows::core::Error from 16 bytes to 4 bytes
