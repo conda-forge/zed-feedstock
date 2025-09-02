@@ -38,7 +38,9 @@ mkdir "%CARGO_TARGET_DIR%" 2>nul
 mkdir "%CARGO_HOME%" 2>nul
 
 REM Configure environment for Zed build (following official Windows development guide)
-REM No special RUSTFLAGS needed - use defaults
+REM Hide AWS-LC symbols to prevent conflicts with other crypto libraries
+set CFLAGS=%CFLAGS% -DBORINGSSL_SHARED_LIBRARY
+set CXXFLAGS=%CXXFLAGS% -DBORINGSSL_SHARED_LIBRARY
 
 REM Create cargo config directory and copy configuration
 if not exist "%SRC_DIR%\.cargo" mkdir "%SRC_DIR%\.cargo"
