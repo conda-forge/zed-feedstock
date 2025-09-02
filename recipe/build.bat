@@ -52,7 +52,7 @@ mkdir "%CARGO_TARGET_DIR%" 2>nul
 mkdir "%CARGO_HOME%" 2>nul
 
 REM Configure Rust flags for Windows with MSVC
-set RUSTFLAGS=%RUSTFLAGS% -C link-arg=legacy_stdio_definitions.lib
+set RUSTFLAGS=%RUSTFLAGS% -C link-arg=legacy_stdio_definitions.lib -C target-feature=-crt-static
 
 REM Create cargo config directory and copy configuration
 if not exist "%SRC_DIR%\.cargo" mkdir "%SRC_DIR%\.cargo"
