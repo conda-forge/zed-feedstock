@@ -8,12 +8,7 @@ REM Check for required tools
 where cargo >nul 2>&1 || (echo ERROR: cargo not found in PATH && exit /b 1)
 where cmake >nul 2>&1 || (echo ERROR: cmake not found in PATH && exit /b 1)
 
-REM Check MSVC toolchain
-if not defined VCINSTALLDIR (
-    echo ERROR: Visual Studio Build Tools not properly configured
-    echo Please run this from a Visual Studio Developer Command Prompt
-    exit /b 1
-)
+REM MinGW GCC toolchain will be provided by conda environment
 
 REM Extract source if needed
 if not exist Cargo.toml (
@@ -51,8 +46,8 @@ REM Create temporary directories
 mkdir "%CARGO_TARGET_DIR%" 2>nul
 mkdir "%CARGO_HOME%" 2>nul
 
-REM Configure Rust flags for Windows with MSVC
-set RUSTFLAGS=%RUSTFLAGS% -C link-arg=legacy_stdio_definitions.lib -C target-feature=-crt-static
+REM Configure Rust flags for Windows with MinGW GCC
+set RUSTFLAGS=%RUSTFLAGS% -C target-feature=+crt-static
 
 REM Create cargo config directory and copy configuration
 if not exist "%SRC_DIR%\.cargo" mkdir "%SRC_DIR%\.cargo"

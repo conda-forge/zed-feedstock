@@ -13,20 +13,5 @@ rustflags = [
     "--cfg",
     "windows_slim_errors",        # Reduce the size of windows::core::Error from 16 bytes to 4 bytes
     "-C",
-    "target-feature=-crt-static", # Use dynamic CRT linking for conda compatibility
-    "-C",
-    "link-arg=legacy_stdio_definitions.lib",  # Fix aws-lc-sys missing symbols
-]
-
-# Windows MSVC specific configuration
-[target.x86_64-pc-windows-msvc]
-rustflags = [
-    "--cfg",
-    "windows_slim_errors",
-    "-C",
-    "target-feature=-crt-static",
-    "-C",
-    "link-arg=legacy_stdio_definitions.lib",
-    "-C",
-    "link-arg=/FORCE:MULTIPLE",
+    "target-feature=+crt-static", # Use dynamic CRT linking for conda compatibility
 ]

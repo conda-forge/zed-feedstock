@@ -1,13 +1,13 @@
 c_compiler:
-- vs2022
+- m2w64-gcc
 c_stdlib:
-- vs
+- m2w64-sysroot
 channel_sources:
 - conda-forge
 channel_targets:
 - conda-forge main
 cxx_compiler:
-- vs2022
+- m2w64-gcc
 libssh2:
 - '1'
 rust_compiler:
