@@ -4,23 +4,15 @@ setlocal enabledelayedexpansion
 REM Validate required dependencies
 echo Validating build environment...
 
-REM Check for required tools
+REM Check for required tools (per Zed Windows development docs)
 where cargo >nul 2>&1 || (echo ERROR: cargo not found in PATH && exit /b 1)
 where cmake >nul 2>&1 || (echo ERROR: cmake not found in PATH && exit /b 1)
+where cl >nul 2>&1 || (echo ERROR: MSVC compiler (cl) not found in PATH && exit /b 1)
 
-REM Install and set GNU target for Rust
-echo Installing Rust GNU target...
-rustup target add x86_64-pc-windows-gnu || (
-    echo ERROR: Failed to install x86_64-pc-windows-gnu target
-    exit /b 1
-)
+REM Rust toolchain setup
+echo Setting up Rust toolchain...
 
-REM MinGW GCC toolchain will be provided by conda environment
-REM Override MSVC environment variables to use GCC instead
-set "CC=gcc"
-set "CXX=g++"
-set "AR=ar"
-set "RANLIB=ranlib"
+REM Use MSVC toolchain
 
 REM Extract source if needed
 if not exist Cargo.toml (
@@ -58,14 +50,8 @@ REM Create temporary directories
 mkdir "%CARGO_TARGET_DIR%" 2>nul
 mkdir "%CARGO_HOME%" 2>nul
 
-REM Configure Rust flags for Windows with MinGW GCC
-set RUSTFLAGS=%RUSTFLAGS% -C target-feature=+crt-static
-set CARGO_TARGET_X86_64_PC_WINDOWS_GNU_LINKER=x86_64-w64-mingw32-gcc
-set CARGO_BUILD_TARGET=x86_64-pc-windows-gnu
-REM Force Rust to ignore any MSVC installation and use GNU target
-set VCINSTALLDIR=
-set VSINSTALLDIR=
-set RUSTUP_TOOLCHAIN=
+REM Configure environment for Zed build (following official Windows development guide)
+REM No special RUSTFLAGS needed - use defaults
 
 REM Create cargo config directory and copy configuration
 if not exist "%SRC_DIR%\.cargo" mkdir "%SRC_DIR%\.cargo"
@@ -91,17 +77,17 @@ cargo-bundle-licenses --format yaml --output THIRDPARTY.yml || (
     goto cleanup_and_exit
 )
 
-REM Build Zed with release configuration using MinGW target
+REM Build Zed with release configuration (per official Windows development guide)
 echo Building Zed (this may take a while)...
-cargo build --release --locked --target x86_64-pc-windows-gnu --package zed --package cli --jobs 1 || (
+cargo build --release --locked --package zed --package cli || (
     echo ERROR: Build failed
     goto cleanup_and_exit
 )
 
 REM Copy build artifacts to target location
 echo Copying build artifacts...
-if exist "%CARGO_TARGET_DIR%\x86_64-pc-windows-gnu\release\zed.exe" (
-    copy "%CARGO_TARGET_DIR%\x86_64-pc-windows-gnu\release\zed.exe" "%PREFIX%\Scripts\zed.exe" || (
+if exist "%CARGO_TARGET_DIR%\release\zed.exe" (
+    copy "%CARGO_TARGET_DIR%\release\zed.exe" "%PREFIX%\Scripts\zed.exe" || (
         echo ERROR: Failed to copy zed.exe
         goto cleanup_and_exit
     )
@@ -110,8 +96,8 @@ if exist "%CARGO_TARGET_DIR%\x86_64-pc-windows-gnu\release\zed.exe" (
     goto cleanup_and_exit
 )
 
-if exist "%CARGO_TARGET_DIR%\x86_64-pc-windows-gnu\release\cli.exe" (
-    copy "%CARGO_TARGET_DIR%\x86_64-pc-windows-gnu\release\cli.exe" "%PREFIX%\Scripts\zed-cli.exe" || (
+if exist "%CARGO_TARGET_DIR%\release\cli.exe" (
+    copy "%CARGO_TARGET_DIR%\release\cli.exe" "%PREFIX%\Scripts\zed-cli.exe" || (
         echo ERROR: Failed to copy cli.exe
         goto cleanup_and_exit
     )

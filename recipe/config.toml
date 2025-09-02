@@ -6,13 +6,13 @@ target-dir = "${CARGO_TARGET_DIR}"
 git-fetch-with-cli = true
 
 [profile.release]
+# Standard release profile - following Zed's official Windows development guide
 codegen-units = 4
 
-[target.x86_64-pc-windows-gnu]
-linker = "x86_64-w64-mingw32-gcc"
+[target.'cfg(target_os = "windows")']
 rustflags = [
     "--cfg",
     "windows_slim_errors",        # Reduce the size of windows::core::Error from 16 bytes to 4 bytes
     "-C",
-    "target-feature=+crt-static", # Use static CRT linking for MinGW compatibility
+    "target-feature=+crt-static", # Use static CRT linking
 ]
