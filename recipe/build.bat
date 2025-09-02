@@ -38,9 +38,11 @@ mkdir "%CARGO_TARGET_DIR%" 2>nul
 mkdir "%CARGO_HOME%" 2>nul
 
 REM Configure environment for Zed build (following official Windows development guide)
-REM Hide AWS-LC symbols to prevent conflicts with other crypto libraries
-set CFLAGS=%CFLAGS% -DBORINGSSL_SHARED_LIBRARY
-set CXXFLAGS=%CXXFLAGS% -DBORINGSSL_SHARED_LIBRARY
+REM Configure AWS-LC for shared object boundaries with hidden symbols
+set CFLAGS=%CFLAGS% -fvisibility=hidden -DBORINGSSL_SHARED_LIBRARY
+set CXXFLAGS=%CXXFLAGS% -fvisibility=hidden -DBORINGSSL_SHARED_LIBRARY
+REM AWS-LC's own source files need BORINGSSL_IMPLEMENTATION
+set AWS_LC_SYS_CMAKE_ARGS=-DBORINGSSL_IMPLEMENTATION=ON
 
 REM Create cargo config directory and copy configuration
 if not exist "%SRC_DIR%\.cargo" mkdir "%SRC_DIR%\.cargo"
