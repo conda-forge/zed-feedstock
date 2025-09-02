@@ -43,6 +43,9 @@ set CMAKE_C_FLAGS_RELEASE=%CMAKE_C_FLAGS_RELEASE% /MT
 set CMAKE_C_FLAGS_DEBUG=%CMAKE_C_FLAGS_DEBUG% /MTd
 set CMAKE_CXX_FLAGS_RELEASE=%CMAKE_CXX_FLAGS_RELEASE% /MT
 set CMAKE_CXX_FLAGS_DEBUG=%CMAKE_CXX_FLAGS_DEBUG% /MTd
+REM Also set base flags for any builds that don't specify config-specific flags
+set CMAKE_C_FLAGS=%CMAKE_C_FLAGS% /MT
+set CMAKE_CXX_FLAGS=%CMAKE_CXX_FLAGS% /MT
 
 REM Create cargo config directory and copy configuration
 if not exist "%SRC_DIR%\.cargo" mkdir "%SRC_DIR%\.cargo"
