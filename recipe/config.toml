@@ -1,6 +1,8 @@
 [build]
 # Use environment variable for target dir to support temp directories
 target-dir = "${CARGO_TARGET_DIR}"
+# Force GNU target for MinGW compatibility
+target = "x86_64-pc-windows-gnu"
 
 [net]
 git-fetch-with-cli = true

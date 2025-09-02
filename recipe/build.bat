@@ -56,6 +56,7 @@ mkdir "%CARGO_HOME%" 2>nul
 REM Configure Rust flags for Windows with MinGW GCC
 set RUSTFLAGS=%RUSTFLAGS% -C target-feature=+crt-static
 set CARGO_TARGET_X86_64_PC_WINDOWS_GNU_LINKER=x86_64-w64-mingw32-gcc
+set CARGO_BUILD_TARGET=x86_64-pc-windows-gnu
 
 REM Create cargo config directory and copy configuration
 if not exist "%SRC_DIR%\.cargo" mkdir "%SRC_DIR%\.cargo"
