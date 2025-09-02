@@ -38,9 +38,11 @@ mkdir "%CARGO_TARGET_DIR%" 2>nul
 mkdir "%CARGO_HOME%" 2>nul
 
 REM Configure environment for Zed build (following official Windows development guide)
-REM Force aws-lc-sys to use static CRT to match our target-feature=+crt-static
-set AWS_LC_SYS_STATIC_CRT=1
-set CMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded
+REM Force aws-lc-sys to use static CRT (it uses OLD CMake policy, so need old flags)
+set CMAKE_C_FLAGS_RELEASE=%CMAKE_C_FLAGS_RELEASE% /MT
+set CMAKE_C_FLAGS_DEBUG=%CMAKE_C_FLAGS_DEBUG% /MTd
+set CMAKE_CXX_FLAGS_RELEASE=%CMAKE_CXX_FLAGS_RELEASE% /MT
+set CMAKE_CXX_FLAGS_DEBUG=%CMAKE_CXX_FLAGS_DEBUG% /MTd
 
 REM Create cargo config directory and copy configuration
 if not exist "%SRC_DIR%\.cargo" mkdir "%SRC_DIR%\.cargo"
