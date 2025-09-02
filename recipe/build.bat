@@ -73,17 +73,17 @@ cargo-bundle-licenses --format yaml --output THIRDPARTY.yml || (
     goto cleanup_and_exit
 )
 
-REM Build Zed with release configuration
+REM Build Zed with release configuration using MinGW target
 echo Building Zed (this may take a while)...
-cargo build --release --locked --package zed --package cli --jobs 1 || (
+cargo build --release --locked --target x86_64-pc-windows-gnu --package zed --package cli --jobs 1 || (
     echo ERROR: Build failed
     goto cleanup_and_exit
 )
 
 REM Copy build artifacts to target location
 echo Copying build artifacts...
-if exist "%CARGO_TARGET_DIR%\release\zed.exe" (
-    copy "%CARGO_TARGET_DIR%\release\zed.exe" "%PREFIX%\Scripts\zed.exe" || (
+if exist "%CARGO_TARGET_DIR%\x86_64-pc-windows-gnu\release\zed.exe" (
+    copy "%CARGO_TARGET_DIR%\x86_64-pc-windows-gnu\release\zed.exe" "%PREFIX%\Scripts\zed.exe" || (
         echo ERROR: Failed to copy zed.exe
         goto cleanup_and_exit
     )
@@ -92,8 +92,8 @@ if exist "%CARGO_TARGET_DIR%\release\zed.exe" (
     goto cleanup_and_exit
 )
 
-if exist "%CARGO_TARGET_DIR%\release\cli.exe" (
-    copy "%CARGO_TARGET_DIR%\release\cli.exe" "%PREFIX%\Scripts\zed-cli.exe" || (
+if exist "%CARGO_TARGET_DIR%\x86_64-pc-windows-gnu\release\cli.exe" (
+    copy "%CARGO_TARGET_DIR%\x86_64-pc-windows-gnu\release\cli.exe" "%PREFIX%\Scripts\zed-cli.exe" || (
         echo ERROR: Failed to copy cli.exe
         goto cleanup_and_exit
     )
