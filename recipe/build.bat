@@ -52,6 +52,9 @@ REM Also set CMAKE_ARGS for compatibility
 set "CMAKE_ARGS=%CMAKE_ARGS% -DCMAKE_POLICY_DEFAULT_CMP0091=NEW"
 set "CMAKE_ARGS=%CMAKE_ARGS% -DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded"
 
+REM Force CMAKE_BUILD_TYPE to Release to avoid CRT mismatches
+set CMAKE_BUILD_TYPE=Release
+
 REM Create cargo config directory and copy configuration
 if not exist "%SRC_DIR%\.cargo" mkdir "%SRC_DIR%\.cargo"
 copy "%RECIPE_DIR%\config.toml" "%SRC_DIR%\.cargo\config.toml" || (
