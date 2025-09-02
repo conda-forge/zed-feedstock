@@ -8,6 +8,13 @@ REM Check for required tools
 where cargo >nul 2>&1 || (echo ERROR: cargo not found in PATH && exit /b 1)
 where cmake >nul 2>&1 || (echo ERROR: cmake not found in PATH && exit /b 1)
 
+REM Install and set GNU target for Rust
+echo Installing Rust GNU target...
+rustup target add x86_64-pc-windows-gnu || (
+    echo ERROR: Failed to install x86_64-pc-windows-gnu target
+    exit /b 1
+)
+
 REM MinGW GCC toolchain will be provided by conda environment
 
 REM Extract source if needed
@@ -48,6 +55,7 @@ mkdir "%CARGO_HOME%" 2>nul
 
 REM Configure Rust flags for Windows with MinGW GCC
 set RUSTFLAGS=%RUSTFLAGS% -C target-feature=+crt-static
+set CARGO_TARGET_X86_64_PC_WINDOWS_GNU_LINKER=x86_64-w64-mingw32-gcc
 
 REM Create cargo config directory and copy configuration
 if not exist "%SRC_DIR%\.cargo" mkdir "%SRC_DIR%\.cargo"
