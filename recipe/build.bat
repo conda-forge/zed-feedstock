@@ -1,19 +1,6 @@
 @echo off
 setlocal enabledelayedexpansion
 
-REM Validate required dependencies
-echo Validating build environment...
-
-REM Check for required tools (per Zed Windows development docs)
-where cargo >nul 2>&1 || (echo ERROR: cargo not found in PATH && exit /b 1)
-where cmake >nul 2>&1 || (echo ERROR: cmake not found in PATH && exit /b 1)
-where cl >nul 2>&1 || (echo ERROR: MSVC compiler (cl) not found in PATH && exit /b 1)
-
-REM Rust toolchain setup
-echo Setting up Rust toolchain...
-
-REM Use MSVC toolchain
-
 REM Extract source if needed
 if not exist Cargo.toml (
     echo Extracting source files...
