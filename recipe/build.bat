@@ -37,9 +37,9 @@ REM Create temporary directories
 mkdir "%CARGO_TARGET_DIR%" 2>nul
 mkdir "%CARGO_HOME%" 2>nul
 
-REM Configure environment for Zed build
-set CMAKE_ARGS=%CMAKE_ARGS% -DCMAKE_POLICY_DEFAULT_CMP0091=NEW
-set CMAKE_ARGS=%CMAKE_ARGS% -DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded$<$<CONFIG:Debug>:Debug>
+REM Configure environment for Zed build - fix aws-lc-sys CRT linking
+set "CMAKE_ARGS=%CMAKE_ARGS% -DCMAKE_POLICY_DEFAULT_CMP0091=NEW"
+set "CMAKE_ARGS=%CMAKE_ARGS% -DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded$<$<CONFIG:Debug>:Debug>"
 
 REM Create cargo config directory and copy configuration
 if not exist "%SRC_DIR%\.cargo" mkdir "%SRC_DIR%\.cargo"
