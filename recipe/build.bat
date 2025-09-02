@@ -38,12 +38,19 @@ mkdir "%CARGO_TARGET_DIR%" 2>nul
 mkdir "%CARGO_HOME%" 2>nul
 
 REM Configure environment for Zed build - fix aws-lc-sys CRT linking
-REM Set CMAKE_ARGS for conda-forge compatibility
-set "CMAKE_ARGS=%CMAKE_ARGS% -DCMAKE_POLICY_DEFAULT_CMP0091=NEW"
-set "CMAKE_ARGS=%CMAKE_ARGS% -DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded$<$<CONFIG:Debug>:Debug>"
-REM Also set direct CMAKE variables that aws-lc-sys build will inherit
+REM Override CMAKE compiler flags directly
+set CMAKE_C_FLAGS=/MT %CMAKE_C_FLAGS%
+set CMAKE_CXX_FLAGS=/MT %CMAKE_CXX_FLAGS%
+set CMAKE_C_FLAGS_RELEASE=/MT %CMAKE_C_FLAGS_RELEASE%
+set CMAKE_CXX_FLAGS_RELEASE=/MT %CMAKE_CXX_FLAGS_RELEASE%
+set CMAKE_C_FLAGS_RELWITHDEBINFO=/MT %CMAKE_C_FLAGS_RELWITHDEBINFO%
+set CMAKE_CXX_FLAGS_RELWITHDEBINFO=/MT %CMAKE_CXX_FLAGS_RELWITHDEBINFO%
+REM Force CMAKE runtime library policy and setting
 set CMAKE_POLICY_DEFAULT_CMP0091=NEW
 set CMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded
+REM Also set CMAKE_ARGS for compatibility
+set "CMAKE_ARGS=%CMAKE_ARGS% -DCMAKE_POLICY_DEFAULT_CMP0091=NEW"
+set "CMAKE_ARGS=%CMAKE_ARGS% -DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded"
 
 REM Create cargo config directory and copy configuration
 if not exist "%SRC_DIR%\.cargo" mkdir "%SRC_DIR%\.cargo"

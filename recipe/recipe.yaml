@@ -54,6 +54,7 @@ requirements:
     - if: win
       then:
         - sqlite
+        - cmake
         - openssl
         - nasm
         - libssh2
