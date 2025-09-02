@@ -37,21 +37,9 @@ REM Create temporary directories
 mkdir "%CARGO_TARGET_DIR%" 2>nul
 mkdir "%CARGO_HOME%" 2>nul
 
-REM Configure environment for Zed build (following official Windows development guide)
-REM Force aws-lc-sys to use static CRT (fix config vs build phase mismatch)
-set CMAKE_C_FLAGS_RELEASE=%CMAKE_C_FLAGS_RELEASE% /MT
-set CMAKE_C_FLAGS_DEBUG=%CMAKE_C_FLAGS_DEBUG% /MTd
-set CMAKE_CXX_FLAGS_RELEASE=%CMAKE_CXX_FLAGS_RELEASE% /MT
-set CMAKE_CXX_FLAGS_DEBUG=%CMAKE_CXX_FLAGS_DEBUG% /MTd
-REM CRITICAL: Also set RelWithDebInfo flags (the actual build profile used)
-set CMAKE_C_FLAGS_RELWITHDEBINFO=%CMAKE_C_FLAGS_RELWITHDEBINFO% /MT
-set CMAKE_CXX_FLAGS_RELWITHDEBINFO=%CMAKE_CXX_FLAGS_RELWITHDEBINFO% /MT
-REM And MinSizeRel for completeness
-set CMAKE_C_FLAGS_MINSIZEREL=%CMAKE_C_FLAGS_MINSIZEREL% /MT
-set CMAKE_CXX_FLAGS_MINSIZEREL=%CMAKE_CXX_FLAGS_MINSIZEREL% /MT
-REM Also set base flags for any builds that don't specify config-specific flags
-set CMAKE_C_FLAGS=%CMAKE_C_FLAGS% /MT
-set CMAKE_CXX_FLAGS=%CMAKE_CXX_FLAGS% /MT
+REM Configure environment for Zed build
+set CMAKE_ARGS=%CMAKE_ARGS% -DCMAKE_POLICY_DEFAULT_CMP0091=NEW
+set CMAKE_ARGS=%CMAKE_ARGS% -DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded$<$<CONFIG:Debug>:Debug>
 
 REM Create cargo config directory and copy configuration
 if not exist "%SRC_DIR%\.cargo" mkdir "%SRC_DIR%\.cargo"
