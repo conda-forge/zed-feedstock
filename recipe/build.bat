@@ -16,6 +16,11 @@ rustup target add x86_64-pc-windows-gnu || (
 )
 
 REM MinGW GCC toolchain will be provided by conda environment
+REM Override MSVC environment variables to use GCC instead
+set "CC=gcc"
+set "CXX=g++"
+set "AR=ar"
+set "RANLIB=ranlib"
 
 REM Extract source if needed
 if not exist Cargo.toml (
@@ -57,6 +62,9 @@ REM Configure Rust flags for Windows with MinGW GCC
 set RUSTFLAGS=%RUSTFLAGS% -C target-feature=+crt-static
 set CARGO_TARGET_X86_64_PC_WINDOWS_GNU_LINKER=x86_64-w64-mingw32-gcc
 set CARGO_BUILD_TARGET=x86_64-pc-windows-gnu
+REM Force Rust to ignore any MSVC installation
+set VCINSTALLDIR=
+set VSINSTALLDIR=
 
 REM Create cargo config directory and copy configuration
 if not exist "%SRC_DIR%\.cargo" mkdir "%SRC_DIR%\.cargo"
