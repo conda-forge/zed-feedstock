@@ -38,11 +38,9 @@ mkdir "%CARGO_TARGET_DIR%" 2>nul
 mkdir "%CARGO_HOME%" 2>nul
 
 REM Configure environment for Zed build (following official Windows development guide)
-REM Configure AWS-LC for shared object boundaries with hidden symbols
-set CFLAGS=%CFLAGS% -fvisibility=hidden -DBORINGSSL_SHARED_LIBRARY
-set CXXFLAGS=%CXXFLAGS% -fvisibility=hidden -DBORINGSSL_SHARED_LIBRARY
-REM AWS-LC's own source files need BORINGSSL_IMPLEMENTATION
-set AWS_LC_SYS_CMAKE_ARGS=-DBORINGSSL_IMPLEMENTATION=ON
+REM Force aws-lc-sys to use static CRT to match our target-feature=+crt-static
+set AWS_LC_SYS_STATIC_CRT=1
+set CMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded
 
 REM Create cargo config directory and copy configuration
 if not exist "%SRC_DIR%\.cargo" mkdir "%SRC_DIR%\.cargo"
