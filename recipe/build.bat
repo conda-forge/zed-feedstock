@@ -63,7 +63,7 @@ cargo-bundle-licenses --format yaml --output THIRDPARTY.yml || (
 
 REM Build Zed with release configuration (per official Windows development guide)
 echo Building Zed (this may take a while)...
-cargo build --release --locked --package zed --package cli || (
+cargo build --verbose --release --locked --package zed --package cli || (
     echo ERROR: Build failed
     goto cleanup_and_exit
 )
