@@ -24,7 +24,7 @@ copy "crates\zed\resources\app-icon.png" "%PREFIX%\Menu\zed.png" || (
 REM Set build environment variables
 set ZED_UPDATE_EXPLANATION=Please use your package manager to update zed from conda-forge
 set CARGO_PROFILE_RELEASE_DEBUG=false
-set RUSTFLAGS=-C linker=lld-link.exe
+set RUSTFLAGS=-C linker=lld-link.exe -C link-arg=/Qspectre
 
 REM Use temp directory for build artifacts to avoid path length issues
 set "TEMP_BUILD_DIR=%TEMP%\zed-build-%RANDOM%"
@@ -58,7 +58,7 @@ cargo-bundle-licenses --format yaml --output THIRDPARTY.yml || (
 
 REM Build Zed with release configuration (per official Windows development guide)
 echo Building Zed (this may take a while)...
-cargo build --verbose --release --locked --jobs 1 --package zed --package cli || (
+cargo build --release --locked --jobs 1 --package zed --package cli || (
     echo ERROR: Build failed
     goto cleanup_and_exit
 )

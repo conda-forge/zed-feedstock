@@ -25,7 +25,6 @@ requirements:
     - if: win
       then:
         - lld
-        - msvc-headers-libs
         - sqlite
         - openssl
         - nasm
@@ -56,7 +55,6 @@ requirements:
     - if: win
       then:
         - lld
-        - msvc-headers-libs
         - sqlite
         - cmake
         - openssl
