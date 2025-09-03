@@ -8,7 +8,7 @@ git-fetch-with-cli = true
 [profile.release]
 # Standard release profile - following Zed's official Windows development guide
 codegen-units = 4
-opt-level = 3
+opt-level = 0
 
 [target.'cfg(target_os = "windows")']
 rustflags = [
