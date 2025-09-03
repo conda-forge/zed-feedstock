@@ -21,7 +21,7 @@ requirements:
     - ${{ stdlib('c') }}
     - cargo-bundle-licenses
     - pkg-config
-    - cmake =3.14
+    - cmake
     - if: win
       then:
         - sqlite
@@ -54,7 +54,7 @@ requirements:
     - if: win
       then:
         - sqlite
-        - cmake =3.14
+        - cmake
         - openssl
         - nasm
         - libssh2

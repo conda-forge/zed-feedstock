@@ -37,9 +37,6 @@ REM Create temporary directories
 mkdir "%CARGO_TARGET_DIR%" 2>nul
 mkdir "%CARGO_HOME%" 2>nul
 
-REM Force CMAKE_BUILD_TYPE to Release to avoid CRT mismatches
-set CMAKE_BUILD_TYPE=Release
-
 REM Create cargo config directory and copy configuration
 if not exist "%SRC_DIR%\.cargo" mkdir "%SRC_DIR%\.cargo"
 copy "%RECIPE_DIR%\config.toml" "%SRC_DIR%\.cargo\config.toml" || (
