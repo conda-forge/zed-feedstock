@@ -24,7 +24,7 @@ copy "crates\zed\resources\app-icon.png" "%PREFIX%\Menu\zed.png" || (
 REM Set build environment variables
 set ZED_UPDATE_EXPLANATION=Please use your package manager to update zed from conda-forge
 set CARGO_PROFILE_RELEASE_DEBUG=false
-set RUSTFLAGS="-C linker=clang -C link-arg=-fuse-ld=lld"
+set RUSTFLAGS=-C linker=clang -C link-arg=-fuse-ld=lld
 
 REM Use temp directory for build artifacts to avoid path length issues
 set "TEMP_BUILD_DIR=%TEMP%\zed-build-%RANDOM%"
