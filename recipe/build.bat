@@ -38,13 +38,6 @@ REM Create temporary directories
 mkdir "%CARGO_TARGET_DIR%" 2>nul
 mkdir "%CARGO_HOME%" 2>nul
 
-REM Create cargo config directory and copy configuration
-if not exist "%SRC_DIR%\.cargo" mkdir "%SRC_DIR%\.cargo"
-copy "%RECIPE_DIR%\config.toml" "%SRC_DIR%\.cargo\config.toml" || (
-    echo ERROR: Failed to copy cargo config
-    goto cleanup_and_exit
-)
-
 REM Check if libssh2.lib exists before copying
 if exist "%LIBRARY_LIB%\libssh2.lib" (
     echo Fixing ssh2 library name mismatch...
@@ -64,7 +57,7 @@ cargo-bundle-licenses --format yaml --output THIRDPARTY.yml || (
 
 REM Build Zed with release configuration (per official Windows development guide)
 echo Building Zed (this may take a while)...
-cargo build --verbose --release --locked --package zed --package cli || (
+cargo build --verbose --release --locked --jobs 1 --package zed --package cli || (
     echo ERROR: Build failed
     goto cleanup_and_exit
 )
@@ -98,7 +91,6 @@ REM Cleanup temporary directories
 echo Cleaning up temporary files...
 if exist "%CARGO_TARGET_DIR%" rmdir /s /q "%CARGO_TARGET_DIR%" 2>nul
 if exist "%CARGO_HOME%" rmdir /s /q "%CARGO_HOME%" 2>nul
-if exist "%SRC_DIR%\.cargo" rmdir /s /q "%SRC_DIR%\.cargo" 2>nul
 
 REM Exit with the appropriate code
 if errorlevel 1 exit /b 1
