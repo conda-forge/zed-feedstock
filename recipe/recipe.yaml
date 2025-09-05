@@ -24,7 +24,6 @@ requirements:
     - cmake
     - if: win
       then:
-        - lld
         - sqlite
         - openssl
         - nasm
@@ -54,7 +53,6 @@ requirements:
         - libxkbcommon
     - if: win
       then:
-        - lld
         - sqlite
         - cmake
         - openssl
