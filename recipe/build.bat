@@ -24,7 +24,44 @@ copy "crates\zed\resources\app-icon.png" "%PREFIX%\Menu\zed.png" || (
 REM Set build environment variables
 set ZED_UPDATE_EXPLANATION=Please use your package manager to update zed from conda-forge
 set CARGO_PROFILE_RELEASE_DEBUG=false
-set RUSTFLAGS=-C linker=lld-link.exe -C link-arg=/Qspectre
+set RUSTFLAGS=-C linker=lld-link.exe
+
+REM Detect Spectre-mitigated MSVC libraries and configure accordingly
+set "SPECTRE_ENABLED="
+set "_VSWHERE=%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe"
+
+REM Allow user/CI to provide explicit spectre libs dir
+if not "%SPECTRE_LIBS_DIR%"=="" (
+    if exist "%SPECTRE_LIBS_DIR%" (
+        set "LIB=%SPECTRE_LIBS_DIR%;%LIB%"
+        set "SPECTRE_ENABLED=1"
+    )
+)
+
+REM Auto-detect spectre libs via vswhere if not provided
+if "%SPECTRE_ENABLED%"=="" if exist "%_VSWHERE%" (
+    for /f "usebackq tokens=*" %%I in (`"%_VSWHERE%" -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath`) do set "_VS=%%I"
+    if not "%_VS%"=="" (
+        for /f "usebackq tokens=*" %%V in (`dir /b /ad "%_VS%\VC\Tools\MSVC"`) do set "_MSVCVER=%%V"
+        if exist "%_VS%\VC\Tools\MSVC\%_MSVCVER%\lib\x64\spectre" (
+            set "LIB=%_VS%\VC\Tools\MSVC\%_MSVCVER%\lib\x64\spectre;%LIB%"
+            set "SPECTRE_ENABLED=1"
+        )
+    )
+)
+
+REM If Spectre libs are present, ensure C/C++ builds use /Qspectre
+if "%SPECTRE_ENABLED%"=="1" (
+    echo Using Spectre-mitigated MSVC libraries
+    set "CFLAGS_x86_64-pc-windows-msvc=/Qspectre %CFLAGS_x86_64-pc-windows-msvc%"
+    set "CXXFLAGS_x86_64-pc-windows-msvc=/Qspectre %CXXFLAGS_x86_64-pc-windows-msvc%"
+) else (
+    echo Spectre-mitigated libs not found; scrubbing /Qspectre from build scripts
+    REM Best-effort removal of /Qspectre from any build.rs files to avoid LNK2038 mismatches
+    for /f "delims=" %%F in ('powershell -NoProfile -Command "Get-ChildItem -Recurse -Filter build.rs -ErrorAction SilentlyContinue | ForEach-Object { $_.FullName }"') do (
+        powershell -NoProfile -Command "(Get-Content -Raw '%%F') -replace '/Qspectre','' | Set-Content -NoNewline '%%F'" 2>nul
+    )
+)
 
 REM Use temp directory for build artifacts to avoid path length issues
 set "TEMP_BUILD_DIR=%TEMP%\zed-build-%RANDOM%"
