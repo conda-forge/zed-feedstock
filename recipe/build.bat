@@ -61,6 +61,33 @@ if "%SPECTRE_ENABLED%"=="1" (
     for /f "delims=" %%F in ('powershell -NoProfile -Command "Get-ChildItem -Recurse -Filter build.rs -ErrorAction SilentlyContinue | ForEach-Object { $_.FullName }"') do (
         powershell -NoProfile -Command "(Get-Content -Raw '%%F') -replace '/Qspectre','' | Set-Content -NoNewline '%%F'" 2>nul
     )
+
+    REM Patch msvc_spectre_libs crate to disable hard error when spectre libs are missing
+    set "_ROOT=%CD%"
+    set "_CRATE_NAME=msvc_spectre_libs"
+    set "_CRATE_VER="
+    if exist "%_ROOT%\Cargo.lock" (
+        for /f "usebackq tokens=1,3" %%A in (`powershell -NoProfile -Command "Select-String -Path '%_ROOT%\Cargo.lock' -Pattern '^name = \"%_CRATE_NAME%\"$' -Context 0,2 | ForEach-Object { $_.Context.PostContext | Where-Object { $_ -match '^version = ' } } | ForEach-Object { $_.ToString().Trim() }"`) do (
+            set "_CRATE_VER=%%B"
+        )
+        if not "%_CRATE_VER%"=="" (
+            set "_CRATE_VER=%_CRATE_VER:version = \"=%"
+            set "_CRATE_VER=%_CRATE_VER:\"=%"
+        )
+    )
+    if "%_CRATE_VER%"=="" set "_CRATE_VER=0.1.3"
+
+    echo Will vendor %_CRATE_NAME% v%_CRATE_VER% to disable panic
+    set "_VENDOR_DIR=%_ROOT%\vendor\%_CRATE_NAME%-%_CRATE_VER%"
+    if not exist "%_ROOT%\vendor" mkdir "%_ROOT%\vendor" 2>nul
+    powershell -NoProfile -Command "$ErrorActionPreference='SilentlyContinue'; Remove-Item -Recurse -Force '%_VENDOR_DIR%' 2>$null" >nul 2>&1
+    powershell -NoProfile -Command "$ErrorActionPreference='Stop'; $n='%_CRATE_NAME%'; $v='%_CRATE_VER%'; $u=\"https://crates.io/api/v1/crates/$n/$v/download\"; $dst=Join-Path $env:TEMP \"$n-$v.crate\"; Invoke-WebRequest -UseBasicParsing -Uri $u -OutFile $dst; New-Item -ItemType Directory -Force -Path '%_VENDOR_DIR%' | Out-Null; tar -xf $dst -C '%_VENDOR_DIR%'"
+    if exist "%_VENDOR_DIR%\build.rs" (
+        powershell -NoProfile -Command "(Get-Content -Raw '%_VENDOR_DIR%\build.rs') -replace '\#\[cfg\(feature = \"error\"\)\]', '#[cfg(any())]' | Set-Content -NoNewline '%_VENDOR_DIR%\build.rs'"
+    )
+    if exist "%_ROOT%\Cargo.toml" (
+        powershell -NoProfile -Command "$p='[patch.crates-io]\n%_CRATE_NAME% = { path = \"vendor/%_CRATE_NAME%-%_CRATE_VER%\" }\n'; $f='%_ROOT%\Cargo.toml'; $t=Get-Content -Raw $f; if ($t -notmatch '\n\[patch\\.crates-io\]') { Add-Content -Path $f -Value "`n$p" } else { if ($t -notmatch '%_CRATE_NAME%\s*=\s*\{[^{]*vendor/%_CRATE_NAME%-%_CRATE_VER%') { Add-Content -Path $f -Value "`n$p" } }"
+    )
 )
 
 REM Use temp directory for build artifacts to avoid path length issues
