@@ -53,8 +53,8 @@ if "%SPECTRE_ENABLED%"=="" if exist "%_VSWHERE%" (
 REM If Spectre libs are present, ensure C/C++ builds use /Qspectre
 if "%SPECTRE_ENABLED%"=="1" (
     echo Using Spectre-mitigated MSVC libraries
-    set "CFLAGS_x86_64-pc-windows-msvc=/Qspectre %CFLAGS_x86_64-pc-windows-msvc%"
-    set "CXXFLAGS_x86_64-pc-windows-msvc=/Qspectre %CXXFLAGS_x86_64-pc-windows-msvc%"
+    set "CFLAGS_x86_64_pc_windows_msvc=/Qspectre %CFLAGS_x86_64_pc_windows_msvc%"
+    set "CXXFLAGS_x86_64_pc_windows_msvc=/Qspectre %CXXFLAGS_x86_64_pc_windows_msvc%"
 ) else (
     echo Spectre-mitigated libs not found; scrubbing /Qspectre from build scripts
     REM Best-effort removal of /Qspectre from any build.rs files to avoid LNK2038 mismatches
@@ -122,9 +122,20 @@ cargo-bundle-licenses --format yaml --output THIRDPARTY.yml || (
 
 REM Build Zed with release configuration (per official Windows development guide)
 echo Building Zed (this may take a while)...
-cargo build --release --locked --jobs 1 --package zed --package cli || (
-    echo ERROR: Build failed
-    goto cleanup_and_exit
+
+set "CARGO_ARGS_COMMON=--release --jobs 1 --package zed --package cli"
+if "%SPECTRE_ENABLED%"=="1" (
+    set "CARGO_ARGS=%CARGO_ARGS_COMMON% --locked --frozen"
+    cargo build %CARGO_ARGS% || (
+        echo ERROR: Build failed
+        goto cleanup_and_exit
+    )
+) else (
+    set "CARGO_ARGS=%CARGO_ARGS_COMMON%"
+    cargo build %CARGO_ARGS% || (
+        echo ERROR: Build failed
+        goto cleanup_and_exit
+    )
 )
 
 REM Copy build artifacts to target location
