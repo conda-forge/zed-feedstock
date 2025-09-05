@@ -20,6 +20,9 @@ REM Create temporary directories
 mkdir "%CARGO_TARGET_DIR%" 2>nul
 mkdir "%CARGO_HOME%" 2>nul
 
+REM Copy config.toml to CARGO_HOME for cargo to use
+copy "%RECIPE_DIR%\config.toml" "%CARGO_HOME%\config.toml"
+
 REM Check if libssh2.lib exists before copying
 if exist "%LIBRARY_LIB%\libssh2.lib" (
     copy "%LIBRARY_LIB%\libssh2.lib" "%LIBRARY_LIB%\ssh2.lib"
