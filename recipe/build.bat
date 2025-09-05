@@ -48,8 +48,8 @@ REM Generate third-party licenses
 cargo-bundle-licenses --format yaml --output THIRDPARTY.yml
 
 REM Build and install Zed (Release, no prefer-dynamic)
-cargo install --locked --no-track --bins --root "%PREFIX%" --path crates/zed --target %CARGO_BUILD_TARGET% --features "" --debug=false
-cargo install --locked --no-track --bins --root "%PREFIX%" --path crates/cli --target %CARGO_BUILD_TARGET% --features "" --debug=false
+cargo install --locked --no-track --bins --root "%PREFIX%" --path crates/zed --target %CARGO_BUILD_TARGET% --features ""
+cargo install --locked --no-track --bins --root "%PREFIX%" --path crates/cli --target %CARGO_BUILD_TARGET% --features ""
 
 REM Cleanup temporary directories
 if exist "%CARGO_TARGET_DIR%" rmdir /s /q "%CARGO_TARGET_DIR%" 2>nul
