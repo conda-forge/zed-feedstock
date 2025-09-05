@@ -53,9 +53,8 @@ requirements:
         - libxkbcommon
     - if: win
       then:
-        - mold
+        - lld
         - sqlite
-        - cmake
         - openssl
         - nasm
         - libssh2
