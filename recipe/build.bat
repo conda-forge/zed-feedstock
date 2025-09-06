@@ -19,7 +19,7 @@ set CARGO_PROFILE_RELEASE_PANIC=abort
 set CARGO_PROFILE_RELEASE_LTO=true
 set CARGO_PROFILE_RELEASE_CODEGEN_UNITS=1
 rem Ensure MSVC/UCRT linkage is consistent for Rust
-set RUSTFLAGS=-C panic=abort -C codegen-units=1 -C link-arg=/NODEFAULTLIB:MSVCRT -C link-arg=/NODEFAULTLIB:LIBCMT -C link-arg=/DEFAULTLIB:ucrt -C link-arg=/DEFAULTLIB:vcruntime -C link-arg=/DEFAULTLIB:msvcrt
+set RUSTFLAGS=-C panic=abort -C codegen-units=1 -C link-arg=/NODEFAULTLIB:LIBCMT -C link-arg=/DEFAULTLIB:ucrt -C link-arg=/DEFAULTLIB:vcruntime -C link-arg=/DEFAULTLIB:msvcrt -C link-arg=kernel32.lib -C link-arg=advapi32.lib
 
 REM Ensure C/C++ deps use Release and dynamic CRT (/MD)
 set CMAKE_BUILD_TYPE=Release
