@@ -58,6 +58,8 @@ REM aws-lc-sys: force use of local NASM, not prebuilt
 set AWS_LC_SYS_PREBUILT_NASM=0
 set AWS_LC_SYS_USE_CMAKE=1
 set RING_USE_CMAKE=1
+set AWS_LC_SYS_NO_VENDOR=1
+set AWS_LC_RUST_DISABLE_PREBUILT_NASM=1
 
 REM Extra cargo target rustflags sanitization
 set CARGO_TARGET_RUSTFLAGS=
