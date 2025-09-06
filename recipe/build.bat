@@ -86,9 +86,40 @@ if exist "%LIBRARY_LIB%\libssh2.lib" (
 REM Generate third-party licenses
 cargo-bundle-licenses --format yaml --output THIRDPARTY.yml
 
-REM Build and install Zed (Release, no prefer-dynamic)
-cargo install --locked --no-track --bins --root "%PREFIX%" --path crates/zed --target %CARGO_BUILD_TARGET% --features ""
-cargo install --locked --no-track --bins --root "%PREFIX%" --path crates/cli --target %CARGO_BUILD_TARGET% --features ""
+REM Debug: dump key env variables for diagnostics
+echo ==== DIAGNOSTICS: CMake/Toolchain Environment ====
+echo CMAKE_BUILD_TYPE=%CMAKE_BUILD_TYPE%
+echo CMAKE_GENERATOR=%CMAKE_GENERATOR%
+echo CMAKE_MSVC_RUNTIME_LIBRARY=%CMAKE_MSVC_RUNTIME_LIBRARY%
+echo CMAKE_C_STANDARD=%CMAKE_C_STANDARD%
+echo CMAKE_C_STANDARD_REQUIRED=%CMAKE_C_STANDARD_REQUIRED%
+echo CMAKE_C_EXTENSIONS=%CMAKE_C_EXTENSIONS%
+echo CMAKE_C_COMPILER=%CMAKE_C_COMPILER%
+echo CMAKE_CXX_COMPILER=%CMAKE_CXX_COMPILER%
+echo CMAKE_ASM_NASM_COMPILER=%CMAKE_ASM_NASM_COMPILER%
+echo ASM_NASM=%ASM_NASM%
+echo CMAKE_PREFIX_PATH=%CMAKE_PREFIX_PATH%
+echo PKG_CONFIG_PATH=%PKG_CONFIG_PATH%
+echo LIB=%LIB%
+echo INCLUDE=%INCLUDE%
+echo NASM=%NASM%
+echo AWS_LC_SYS_PREBUILT_NASM=%AWS_LC_SYS_PREBUILT_NASM%
+echo AWS_LC_SYS_USE_CMAKE=%AWS_LC_SYS_USE_CMAKE%
+echo RING_USE_CMAKE=%RING_USE_CMAKE%
+echo ==== DIAGNOSTICS: Cargo Environment ====
+echo CARGO_HOME=%CARGO_HOME%
+echo CARGO_TARGET_DIR=%CARGO_TARGET_DIR%
+echo CARGO_BUILD_TARGET=%CARGO_BUILD_TARGET%
+echo RUSTFLAGS=%RUSTFLAGS%
+echo CARGO_BUILD_RUSTFLAGS=%CARGO_BUILD_RUSTFLAGS%
+echo CARGO_ENCODED_RUSTFLAGS=%CARGO_ENCODED_RUSTFLAGS%
+echo CARGO_TARGET_RUSTFLAGS=%CARGO_TARGET_RUSTFLAGS%
+echo CARGO_TARGET_X86_64_PC_WINDOWS_MSVC_RUSTFLAGS=%CARGO_TARGET_X86_64_PC_WINDOWS_MSVC_RUSTFLAGS%
+echo ==== END DIAGNOSTICS ====
+
+REM Build and install Zed (verbose cargo to inspect link args)
+cargo install --verbose --locked --no-track --bins --root "%PREFIX%" --path crates/zed --target %CARGO_BUILD_TARGET% --features ""
+cargo install --verbose --locked --no-track --bins --root "%PREFIX%" --path crates/cli --target %CARGO_BUILD_TARGET% --features ""
 
 REM Cleanup temporary directories
 if exist "%CARGO_TARGET_DIR%" rmdir /s /q "%CARGO_TARGET_DIR%" 2>nul
