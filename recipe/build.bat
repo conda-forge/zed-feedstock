@@ -25,6 +25,15 @@ set CMAKE_MSVC_RUNTIME_LIBRARY=MultiThreadedDLL
 set CFLAGS=/O2 /MD
 set CXXFLAGS=/O2 /MD
 
+REM Ensure NASM from conda is used for aws-lc/ring
+set "NASM_PREFIX=%PREFIX%"
+set PATH=%NASM_PREFIX%\Library\bin;%NASM_PREFIX%\Scripts;%PATH%
+set "NASM=%NASM_PREFIX%\Library\bin\nasm.exe"
+set CMAKE_ASM_NASM_COMPILER=%NASM%
+set ASM_NASM=%NASM%
+set CMAKE_C_STANDARD=99
+set CMAKE_GENERATOR=Ninja
+
 REM Use temp directory for build artifacts to avoid path length issues
 set "TEMP_BUILD_DIR=%TEMP%\zed-build-%RANDOM%"
 set "TEMP_CARGO_HOME=C:\zc%RANDOM%"

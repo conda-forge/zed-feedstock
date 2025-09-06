@@ -53,6 +53,7 @@ requirements:
         - libxkbcommon
     - if: win
       then:
+        - cmake
         - lld
         - sqlite
         - openssl
