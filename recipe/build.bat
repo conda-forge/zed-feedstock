@@ -10,17 +10,6 @@ REM Set build environment variables
 set ZED_UPDATE_EXPLANATION=Please use your package manager to update zed from conda-forge
 set CARGO_PROFILE_RELEASE_DEBUG=false
 
-REM Sanitize toolchain flags to avoid MSVC CRT/linker conflicts
-set RUSTFLAGS=
-set CARGO_BUILD_RUSTFLAGS=
-set CARGO_ENCODED_RUSTFLAGS=
-set CARGO_TARGET_X86_64_PC_WINDOWS_MSVC_RUSTFLAGS=
-set CARGO_PROFILE_RELEASE_PANIC=abort
-set CARGO_PROFILE_RELEASE_LTO=true
-set CARGO_PROFILE_RELEASE_CODEGEN_UNITS=1
-rem Minimal linker flag: avoid static CRT only
-set RUSTFLAGS=-C link-arg=/NODEFAULTLIB:LIBCMT
-
 REM Ensure C/C++ deps use Release and dynamic CRT (/MD)
 set CMAKE_BUILD_TYPE=Release
 set CMAKE_MSVC_RUNTIME_LIBRARY=MultiThreadedDLL
