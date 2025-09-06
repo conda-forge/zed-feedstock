@@ -1,0 +1,24 @@
+[target."cfg(all())"]
+rustflags = []
+
+[target."cfg(windows)"]
+rustflags = []
+
+[target.x86_64-pc-windows-msvc]
+linker = "link.exe"
+rustflags = [
+    "-C", "link-arg=legacy_stdio_definitions.lib",
+    "-C", "link-arg=vcruntime.lib",
+    "-C", "link-arg=ucrt.lib",
+    "-C", "prefer-dynamic=no"
+]
+
+[profile.release]
+debug = false
+strip = true
+codegen-units = 1
+lto = true
+panic = "abort"
+
+[build]
+rustflags = []
