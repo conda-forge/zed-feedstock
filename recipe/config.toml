@@ -9,7 +9,8 @@ linker = "link.exe"
 rustflags = [
     "-C", "link-arg=legacy_stdio_definitions.lib",
     "-C", "link-arg=vcruntime.lib",
-    "-C", "link-arg=ucrt.lib"
+    "-C", "link-arg=ucrt.lib",
+    "-C", "prefer-dynamic=no"
 ]
 
 [profile.release]

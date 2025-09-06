@@ -117,9 +117,9 @@ echo CARGO_TARGET_RUSTFLAGS=%CARGO_TARGET_RUSTFLAGS%
 echo CARGO_TARGET_X86_64_PC_WINDOWS_MSVC_RUSTFLAGS=%CARGO_TARGET_X86_64_PC_WINDOWS_MSVC_RUSTFLAGS%
 echo ==== END DIAGNOSTICS ====
 
-REM Build and install Zed (verbose cargo to inspect link args)
-cargo install --verbose --locked --no-track --bins --root "%PREFIX%" --path crates/zed --target %CARGO_BUILD_TARGET% --features ""
-cargo install --verbose --locked --no-track --bins --root "%PREFIX%" --path crates/cli --target %CARGO_BUILD_TARGET% --features ""
+REM Build and install Zed (verbose; avoid dynamic verifier via minimal features)
+cargo install --verbose --locked --no-track --bins --root "%PREFIX%" --path crates/zed --target %CARGO_BUILD_TARGET% --no-default-features --features "rustls-tls"
+cargo install --verbose --locked --no-track --bins --root "%PREFIX%" --path crates/cli --target %CARGO_BUILD_TARGET% --no-default-features --features "rustls-tls"
 
 REM Cleanup temporary directories
 if exist "%CARGO_TARGET_DIR%" rmdir /s /q "%CARGO_TARGET_DIR%" 2>nul
