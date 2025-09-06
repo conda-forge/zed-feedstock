@@ -32,7 +32,14 @@ set "NASM=%NASM_PREFIX%\Library\bin\nasm.exe"
 set CMAKE_ASM_NASM_COMPILER=%NASM%
 set ASM_NASM=%NASM%
 set CMAKE_C_STANDARD=99
+set CMAKE_C_STANDARD_REQUIRED=ON
 set CMAKE_GENERATOR=Ninja
+
+REM aws-lc-sys: force use of local NASM, not prebuilt
+set AWS_LC_SYS_PREBUILT_NASM=0
+
+REM Extra cargo target rustflags sanitization
+set CARGO_TARGET_RUSTFLAGS=
 
 REM Use temp directory for build artifacts to avoid path length issues
 set "TEMP_BUILD_DIR=%TEMP%\zed-build-%RANDOM%"

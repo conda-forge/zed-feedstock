@@ -1,6 +1,9 @@
 [target."cfg(all())"]
 rustflags = []
 
+[target."cfg(windows)"]
+rustflags = []
+
 [target.x86_64-pc-windows-msvc]
 linker = "link.exe"
 rustflags = []
