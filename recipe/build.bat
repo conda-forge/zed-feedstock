@@ -22,8 +22,28 @@ set CARGO_PROFILE_RELEASE_CODEGEN_UNITS=1
 REM Ensure C/C++ deps use Release and dynamic CRT (/MD)
 set CMAKE_BUILD_TYPE=Release
 set CMAKE_MSVC_RUNTIME_LIBRARY=MultiThreadedDLL
-set CFLAGS=/O2 /MD
-set CXXFLAGS=/O2 /MD
+set CFLAGS=/O2 /MD /Zc:wchar_t /Zc:inline /permissive- /EHsc
+set CXXFLAGS=/O2 /MD /Zc:wchar_t /Zc:inline /permissive- /EHsc
+
+REM Harden CMake/MSVC configuration
+set CMAKE_C_STANDARD=11
+set CMAKE_C_STANDARD_REQUIRED=ON
+set CMAKE_C_EXTENSIONS=OFF
+set CMAKE_SYSTEM_NAME=Windows
+set CMAKE_SYSTEM_PROCESSOR=x86_64
+set CMAKE_GENERATOR=Ninja
+set CMAKE_EXPORT_COMPILE_COMMANDS=OFF
+set CMAKE_POLICY_DEFAULT_CMP0091=NEW
+set CMAKE_MT=mt.exe
+set CMAKE_C_COMPILER=cl.exe
+set CMAKE_CXX_COMPILER=cl.exe
+set CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH=OFF
+set CMAKE_FIND_USE_SYSTEM_PACKAGE_REGISTRY=OFF
+set CMAKE_FIND_USE_PACKAGE_REGISTRY=OFF
+set CMAKE_PREFIX_PATH=%PREFIX%;%LIBRARY_PREFIX%
+set PKG_CONFIG_PATH=%LIBRARY_PREFIX%\lib\pkgconfig;%LIBRARY_PREFIX%\share\pkgconfig
+set LIB=%LIBRARY_LIB%;%LIB%
+set INCLUDE=%LIBRARY_INC%;%INCLUDE%
 
 REM Ensure NASM from conda is used for aws-lc/ring
 set "NASM_PREFIX=%PREFIX%"
@@ -31,12 +51,13 @@ set PATH=%NASM_PREFIX%\Library\bin;%NASM_PREFIX%\Scripts;%PATH%
 set "NASM=%NASM_PREFIX%\Library\bin\nasm.exe"
 set CMAKE_ASM_NASM_COMPILER=%NASM%
 set ASM_NASM=%NASM%
-set CMAKE_C_STANDARD=99
-set CMAKE_C_STANDARD_REQUIRED=ON
+REM Keep earlier C standard settings consistent (already set to 11 above)
 set CMAKE_GENERATOR=Ninja
 
 REM aws-lc-sys: force use of local NASM, not prebuilt
 set AWS_LC_SYS_PREBUILT_NASM=0
+set AWS_LC_SYS_USE_CMAKE=1
+set RING_USE_CMAKE=1
 
 REM Extra cargo target rustflags sanitization
 set CARGO_TARGET_RUSTFLAGS=

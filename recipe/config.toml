@@ -6,7 +6,7 @@ rustflags = []
 
 [target.x86_64-pc-windows-msvc]
 linker = "link.exe"
-rustflags = ["-C", "link-arg=legacy_stdio_definitions.lib"]
+rustflags = []
 
 [profile.release]
 debug = false
