@@ -10,8 +10,8 @@ REM Set build environment variables
 set ZED_UPDATE_EXPLANATION=Please use your package manager to update zed from conda-forge
 set CARGO_PROFILE_RELEASE_DEBUG=false
 
-REM Set RUSTFLAGS to ensure consistent static linking
-set RUSTFLAGS=-C target-feature=+crt-static
+REM Set RUSTFLAGS to ensure consistent static linking and force proper CRT
+set RUSTFLAGS=-C target-feature=+crt-static -C link-arg=/NODEFAULTLIB:MSVCRTD -C link-arg=/NODEFAULTLIB:MSVCRT -C link-arg=/DEFAULTLIB:libcmt -C link-arg=/DEFAULTLIB:libucrt
 
 REM Use temp directory for build artifacts to avoid path length issues
 set "TEMP_BUILD_DIR=%TEMP%\zed-build-%RANDOM%"
