@@ -28,6 +28,15 @@ set AWS_LC_SYS_USE_CMAKE=1
 set AWS_LC_SYS_CMAKE_VARIABLES=CMAKE_MSVC_RUNTIME_LIBRARY=MultiThreadedDLL;BUILD_SHARED_LIBS=OFF
 set RING_USE_CMAKE=1
 
+REM Patch Zed livekit_client to disable LiveKit/WebRTC on all Windows targets
+REM This avoids linking prebuilt /MT WebRTC with our /MD runtime
+for %%F in ("crates\livekit_client\Cargo.toml","zed\crates\livekit_client\Cargo.toml") do (
+  if exist %%F (
+    powershell -NoLogo -NoProfile -Command ^
+      "$p='%%F'; if (Test-Path $p) { $t=Get-Content -Raw -LiteralPath $p; $n=$t -replace 'all\(target_os\s*=\s*\"windows\"\s*,\s*target_env\s*=\s*\"gnu\"\)','target_os = \"windows\"'; if ($n -ne $t) { Set-Content -LiteralPath $p -Value $n -Encoding UTF8 -NoNewline; Write-Host 'Patched LiveKit cfg in ' $p } else { Write-Host 'Pattern not found in ' $p } }"
+  )
+)
+
 REM Check if libssh2.lib exists before copying
 if exist "%LIBRARY_LIB%\libssh2.lib" (
     copy "%LIBRARY_LIB%\libssh2.lib" "%LIBRARY_LIB%\ssh2.lib"
