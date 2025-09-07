@@ -8,9 +8,13 @@ rustflags = [
     "-C",
     "link-arg=/NODEFAULTLIB:MSVCRTD",  # Don't link debug runtime
     "-C",
+    "link-arg=/NODEFAULTLIB:MSVCRT",   # Don't link dynamic runtime
+    "-C",
     "link-arg=/DEFAULTLIB:libcmt",     # Use static release runtime
     "-C",
     "link-arg=/DEFAULTLIB:libucrt",    # Use Universal C Runtime
     "-C",
     "link-arg=/DEFAULTLIB:libvcruntime", # Use VC runtime
+    "-C",
+    "link-arg=/DEFAULTLIB:libcmtd",    # Also include debug static runtime for mixed dependencies
 ]
