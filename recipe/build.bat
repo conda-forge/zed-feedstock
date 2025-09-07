@@ -37,6 +37,14 @@ for %%F in ("crates\livekit_client\Cargo.toml","zed\crates\livekit_client\Cargo.
   )
 )
 
+REM Make the livekit_client crate a no-op on Windows by gating the entire crate
+for %%F in ("crates\livekit_client\src\lib.rs","zed\crates\livekit_client\src\lib.rs") do (
+  if exist %%F (
+    powershell -NoLogo -NoProfile -Command ^
+      "$p='%%F'; $t=Get-Content -Raw -LiteralPath $p; if ($t -notmatch '\#\!\[cfg\(not\(target_os\s*=\s*\"windows\"\)\)\]') { $n='#![cfg(not(target_os = \"windows\"))]' + "`r`n" + $t; Set-Content -LiteralPath $p -Value $n -Encoding UTF8 -NoNewline; Write-Host 'Added crate-level cfg gate to ' $p } else { Write-Host 'Crate already gated in ' $p }"
+  )
+)
+
 REM Check if libssh2.lib exists before copying
 if exist "%LIBRARY_LIB%\libssh2.lib" (
     copy "%LIBRARY_LIB%\libssh2.lib" "%LIBRARY_LIB%\ssh2.lib"
