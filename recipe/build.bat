@@ -11,7 +11,7 @@ set ZED_UPDATE_EXPLANATION=Please use your package manager to update zed from co
 set CARGO_PROFILE_RELEASE_DEBUG=false
 
 REM Set RUSTFLAGS to ensure consistent static linking
-set RUSTFLAGS=-C target-feature=+crt-static -C link-arg=/MT
+set RUSTFLAGS=-C target-feature=+crt-static
 
 REM Use temp directory for build artifacts to avoid path length issues
 set "TEMP_BUILD_DIR=%TEMP%\zed-build-%RANDOM%"
