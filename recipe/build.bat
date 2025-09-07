@@ -26,7 +26,7 @@ if exist "%LIBRARY_LIB%\libssh2.lib" (
 )
 
 cargo-bundle-licenses --format yaml --output THIRDPARTY.yml
-cargo install --verbose --package zed --package cli --root "%PREFIX%"
+cargo install --root "%PREFIX%" --path crates/zed
 
 REM Cleanup temporary directories
 if exist "%CARGO_TARGET_DIR%" rmdir /s /q "%CARGO_TARGET_DIR%" 2>nul
