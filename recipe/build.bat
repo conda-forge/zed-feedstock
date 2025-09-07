@@ -25,11 +25,8 @@ if exist "%LIBRARY_LIB%\libssh2.lib" (
     copy "%LIBRARY_LIB%\libssh2.lib" "%LIBRARY_LIB%\ssh2.lib"
 )
 
-REM Generate third-party licenses
 cargo-bundle-licenses --format yaml --output THIRDPARTY.yml
-
-REM Build Zed binaries with cargo build (not cargo install)
-cargo install --verbose --release --package zed --package cli --root "%PREFIX%"
+cargo install --verbose --package zed --package cli --root "%PREFIX%"
 
 REM Cleanup temporary directories
 if exist "%CARGO_TARGET_DIR%" rmdir /s /q "%CARGO_TARGET_DIR%" 2>nul
