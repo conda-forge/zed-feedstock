@@ -17,4 +17,8 @@ rustflags = [
     "link-arg=/DEFAULTLIB:libvcruntime", # Use VC runtime
     "-C",
     "link-arg=/DEFAULTLIB:libcmtd",    # Also include debug static runtime for mixed dependencies
+    "-C",
+    "link-arg=oldnames.lib",           # For compatibility with old C runtime names
+    "-C",
+    "link-arg=libcmt.lib",              # Explicitly link static C runtime
 ]
