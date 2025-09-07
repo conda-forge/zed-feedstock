@@ -18,8 +18,9 @@ set "TEMP_CARGO_HOME=C:\zc%RANDOM%"
 set CARGO_TARGET_DIR=%TEMP_BUILD_DIR%
 set CARGO_HOME=%TEMP_CARGO_HOME%
 
-REM Copy config.toml to CARGO_HOME for cargo to use
-copy "%RECIPE_DIR%\config.toml" "%CARGO_HOME%\config.toml"
+REM Copy config.toml to CARGO_HOME\.cargo for cargo to use
+if not exist "%CARGO_HOME%\.cargo" mkdir "%CARGO_HOME%\.cargo" 2>nul
+copy "%RECIPE_DIR%\config.toml" "%CARGO_HOME%\.cargo\config.toml"
 
 REM Explicitly set target to MSVC if not provided
 if "%CARGO_BUILD_TARGET%"=="" set CARGO_BUILD_TARGET=x86_64-pc-windows-msvc
