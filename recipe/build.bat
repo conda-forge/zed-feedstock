@@ -28,9 +28,8 @@ if exist "%LIBRARY_LIB%\libssh2.lib" (
 REM Generate third-party licenses
 cargo-bundle-licenses --format yaml --output THIRDPARTY.yml
 
-REM Build and install Zed (verbose; upstream default features)
-cargo install --verbose --locked --no-track --bins --root "%PREFIX%" --path crates/zed --target %CARGO_BUILD_TARGET%
-cargo install --verbose --locked --no-track --bins --root "%PREFIX%" --path crates/cli --target %CARGO_BUILD_TARGET%
+REM Build Zed binaries with cargo build (not cargo install)
+cargo install --verbose --release --package zed --package cli --root "%PREFIX%"
 
 REM Cleanup temporary directories
 if exist "%CARGO_TARGET_DIR%" rmdir /s /q "%CARGO_TARGET_DIR%" 2>nul
