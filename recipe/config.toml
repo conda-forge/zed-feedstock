@@ -5,7 +5,4 @@ rustflags = []
 rustflags = []
 
 [target.'cfg(target_os = "windows")']
-linker = "link.exe"
-rustflags = [
-    "-C", "link-arg=/NODEFAULTLIB:LIBCMT"
-]
+linker = "rust-lld.exe"
