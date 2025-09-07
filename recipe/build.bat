@@ -10,6 +10,12 @@ REM Set build environment variables
 set ZED_UPDATE_EXPLANATION=Please use your package manager to update zed from conda-forge
 set CARGO_PROFILE_RELEASE_DEBUG=false
 
+REM Configure AWS-LC for Windows compatibility
+set AWS_LC_SYS_CFLAGS=-experimental:c11atomics -TP
+
+REM Set RUSTFLAGS to ensure consistent CRT usage
+set RUSTFLAGS=-C target-feature=+crt-static
+
 REM Use temp directory for build artifacts to avoid path length issues
 set "TEMP_BUILD_DIR=%TEMP%\zed-build-%RANDOM%"
 set "TEMP_CARGO_HOME=C:\zc%RANDOM%"

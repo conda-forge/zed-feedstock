@@ -1,5 +1,16 @@
 [target.'cfg(target_os = "windows")']
+linker = "link.exe"
 rustflags = [
     "--cfg",
     "windows_slim_errors",        # This cfg will reduce the size of `windows::core::Error` from 16 bytes to 4 bytes
+    "-C",
+    "link-arg=/STACK:8388608",    # 8MB stack size to prevent stack overflow
+    "-C",
+    "link-arg=/NODEFAULTLIB:MSVCRTD",  # Don't link debug runtime
+    "-C",
+    "link-arg=/DEFAULTLIB:libcmt",     # Use static release runtime
+    "-C",
+    "link-arg=/DEFAULTLIB:libucrt",    # Use Universal C Runtime
+    "-C",
+    "link-arg=/DEFAULTLIB:libvcruntime", # Use VC runtime
 ]
