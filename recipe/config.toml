@@ -10,9 +10,8 @@ linker = "link.exe"
 rustflags = [
     "--cfg",
     "windows_slim_errors",        # This cfg will reduce the size of `windows::core::Error` from 16 bytes to 4 bytes
-    "-C",
-    "target-feature=+crt-static=no", # Force dynamic MSVC CRT to align with UCRT on conda-forge
 ]
+crt-static = false
 
 [env]
 MACOSX_DEPLOYMENT_TARGET = "10.15.7"

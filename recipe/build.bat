@@ -21,7 +21,7 @@ if not exist "%CARGO_HOME%\.cargo" mkdir "%CARGO_HOME%\.cargo" 2>nul
 copy "%RECIPE_DIR%\config.toml" "%CARGO_HOME%\.cargo\config.toml"
 
 REM Ensure MSVC toolchain and dynamic CRT across C tool deps
-set RUSTFLAGS=-C debuginfo=0 -C target-feature=+crt-static=no
+set RUSTFLAGS=-C debuginfo=0
 
 REM Align aws-lc-sys CMake build with MultiThreadedDLL (MD)
 set AWS_LC_SYS_USE_CMAKE=1
