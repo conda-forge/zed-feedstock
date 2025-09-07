@@ -1,9 +1,3 @@
-[target."cfg(all())"]
-rustflags = []
-
-[target."cfg(windows)"]
-rustflags = []
-
 [target.'cfg(target_os = "windows")']
 linker = "rust-lld.exe"
 rustflags = [
