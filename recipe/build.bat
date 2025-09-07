@@ -20,13 +20,21 @@ REM Copy config.toml to CARGO_HOME\.cargo for cargo to use
 if not exist "%CARGO_HOME%\.cargo" mkdir "%CARGO_HOME%\.cargo" 2>nul
 copy "%RECIPE_DIR%\config.toml" "%CARGO_HOME%\.cargo\config.toml"
 
+REM Ensure MSVC toolchain and dynamic CRT across C tool deps
+set RUSTFLAGS=-C debuginfo=0 -C target-feature=+crt-static=no
+
+REM Align aws-lc-sys CMake build with MultiThreadedDLL (MD)
+set AWS_LC_SYS_USE_CMAKE=1
+set AWS_LC_SYS_CMAKE_VARIABLES=CMAKE_MSVC_RUNTIME_LIBRARY=MultiThreadedDLL;BUILD_SHARED_LIBS=OFF
+set RING_USE_CMAKE=1
+
 REM Check if libssh2.lib exists before copying
 if exist "%LIBRARY_LIB%\libssh2.lib" (
     copy "%LIBRARY_LIB%\libssh2.lib" "%LIBRARY_LIB%\ssh2.lib"
 )
 
 cargo-bundle-licenses --format yaml --output THIRDPARTY.yml
-cargo install --root "%PREFIX%" --path crates/zed
+cargo install --root "%PREFIX%" --path crates/zed --locked --no-default-features --features "" --profile release
 
 REM Cleanup temporary directories
 if exist "%CARGO_TARGET_DIR%" rmdir /s /q "%CARGO_TARGET_DIR%" 2>nul
