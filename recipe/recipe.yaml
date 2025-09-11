@@ -12,18 +12,24 @@ source:
 
 build:
   number: 0
-  skip:
-    - win
 
 requirements:
   build:
     - ${{ compiler('rust') }}
     - ${{ compiler('c') }}
-    - ${{ stdlib('c') }}
     - ${{ compiler('cxx') }}
+    - ${{ stdlib('c') }}
     - cargo-bundle-licenses
     - pkg-config
     - cmake
+    - if: win
+      then:
+        - sqlite
+        - openssl
+        - nasm
+        - libssh2
+        - libgit2
+        - ucrt
 
   host:
     - if: linux
@@ -45,6 +51,17 @@ requirements:
         - xorg-xproto
         - xorg-kbproto
         - libxkbcommon
+    - if: win
+      then:
+        - ninja
+        - cmake
+        - lld
+        - sqlite
+        - openssl
+        - nasm
+        - libssh2
+        - libgit2
+        - ucrt
 
 tests:
   - script:
@@ -66,3 +83,4 @@ extra:
   recipe-maintainers:
     - lucascolley
     - Hofer-Julian
+    - zelosleone

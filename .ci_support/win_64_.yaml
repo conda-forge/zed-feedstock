@@ -1,0 +1,22 @@
+c_compiler:
+  - vs2022
+c_stdlib:
+  - vs
+channel_sources:
+  - conda-forge
+channel_targets:
+  - conda-forge main
+cxx_compiler:
+  - vs2022
+libgit2:
+  - "1.9"
+libssh2:
+  - "1"
+openssl:
+  - "3"
+rust_compiler:
+  - rust
+sqlite:
+  - "3"
+target_platform:
+  - win-64
