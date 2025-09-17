@@ -5,7 +5,6 @@
     {
       "name": "Zed",
       "description": "High-performance, multiplayer code editor",
-      "activate": true,
       "icon": "{{ MENU_DIR }}/zed.{{ ICON_EXT }}",
       "command": [""],
       "platforms": {
