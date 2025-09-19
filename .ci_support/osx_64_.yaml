@@ -22,8 +22,6 @@ macos_machine:
 - x86_64-apple-darwin13.4.0
 rust_compiler:
 - rust
-rust_compiler_version:
-- '1.89'
 target_platform:
 - osx-64
 zip_keys:
