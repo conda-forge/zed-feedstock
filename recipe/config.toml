@@ -1,0 +1,21 @@
+[build]
+# v0 mangling scheme provides more detailed backtraces around closures
+rustflags = ["-C", "symbol-mangling-version=v0", "--cfg", "tokio_unstable"]
+
+[alias]
+xtask = "run --package xtask --"
+
+[target.'cfg(target_os = "windows")']
+linker = "link.exe"
+rustflags = [
+    "--cfg",
+    "windows_slim_errors",        # This cfg will reduce the size of `windows::core::Error` from 16 bytes to 4 bytes
+]
+crt-static = false
+
+[env]
+MACOSX_DEPLOYMENT_TARGET = "10.15.7"
+
+[profile.release]
+debug = false
+strip = "symbols"
