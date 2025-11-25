@@ -26,8 +26,6 @@ openssl:
 - '3.5'
 rust_compiler:
 - rust
-rust_compiler_version:
-- '1.89'
 sqlite:
 - '3'
 target_platform:
