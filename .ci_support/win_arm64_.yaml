@@ -21,4 +21,4 @@ rust_compiler_version:
 sqlite:
 - '3'
 target_platform:
-- win-64
+- win-arm64
