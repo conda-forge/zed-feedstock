@@ -37,6 +37,7 @@ requirements:
         - alsa-lib
         - curl
         - expat
+        - fontconfig
         - freetype
         - glib   
         - libxcb
