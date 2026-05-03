@@ -36,6 +36,9 @@ requirements:
       then:
         - alsa-lib
         - curl
+        - expat
+        - freetype
+        - glib   
         - libxcb
         - openssl
         - sqlite
