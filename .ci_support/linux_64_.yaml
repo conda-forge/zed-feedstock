@@ -20,6 +20,14 @@ cxx_compiler_version:
 - '14'
 docker_image:
 - quay.io/condaforge/linux-anvil-x86_64:alma9
+expat:
+- '2'
+fontconfig:
+- '2'
+freetype:
+- '2'
+glib:
+- '2'
 libxcb:
 - '1'
 openssl:
