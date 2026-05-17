@@ -36,6 +36,30 @@ jobs:
             DOCKER_IMAGE: quay.io/condaforge/linux-anvil-x86_64:alma9
     steps:
 
+    - name: Manage disk space
+      if: matrix.os == 'ubuntu'
+      run: |
+        sudo mkdir -p /opt/empty_dir || true
+        for d in \
+                 /opt/ghc \
+                 /opt/hostedtoolcache \
+                 /usr/lib/jvm \
+                 /usr/local/.ghcup \
+                 /usr/local/lib/android \
+                 /usr/local/share/powershell \
+                 /usr/share/dotnet \
+                 /usr/share/swift \
+                 ; do
+          sudo rsync --stats -a --delete /opt/empty_dir/ $d || true
+        done
+        BROWSERS="firefox google-chrome-stable microsoft-edge-stable"
+        BROWSERS_TO_REMOVE=$(dpkg --get-selections $BROWSERS 2>/dev/null | awk '{print $1}')
+        sudo apt-get remove --purge -y $BROWSERS_TO_REMOVE
+
+        sudo apt-get autoremove -y >& /dev/null
+        sudo apt-get autoclean -y >& /dev/null
+        df -h
+
     - name: Checkout code
       uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 

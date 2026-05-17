@@ -9,9 +9,7 @@ conda_forge_output_validation: true
 build_platform:
   linux_aarch64: linux_64
   osx_arm64: osx_64
-azure:
-  # free up some extra space on the default Azure Pipelines
-  # linux image before running the Docker container for building
+github_actions:
   free_disk_space: true
 test: native_and_emulated
 bot:
