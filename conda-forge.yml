@@ -14,3 +14,11 @@ github_actions:
 test: native_and_emulated
 bot:
   automerge: true
+workflow_settings:
+  store_build_artifacts:
+    - provider: azure
+      value: true
+  # https://github.com/prefix-dev/rattler-build/issues/2438
+    - provider: azure
+      platform: win_64
+      value: false
