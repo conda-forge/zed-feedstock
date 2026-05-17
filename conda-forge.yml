@@ -9,9 +9,6 @@ conda_forge_output_validation: true
 build_platform:
   linux_aarch64: linux_64
   osx_arm64: osx_64
-azure:
-  settings_linux:
-    swapfile_size: 10GiB
 github_actions:
   free_disk_space: true
 test: native_and_emulated
@@ -19,5 +16,8 @@ bot:
   automerge: true
 workflow_settings:
   store_build_artifacts:
-    - provider: azure
+    # https://github.com/prefix-dev/rattler-build/issues/2438
+    - os: win
+      value: false
+    - os: [linux, osx]
       value: true
