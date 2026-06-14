@@ -27,6 +27,12 @@ fi
 export CARGO_PROFILE_RELEASE_STRIP=symbols
 export CARGO_INCREMENTAL=0
 
+if [[ ${target_platform} == "osx-arm64" ]]; then
+  # Zed's macOS arm64 binary is large enough to hit branch-island issues in
+  # the default conda-forge Darwin linker. Use LLD's Mach-O linker instead.
+  export CARGO_BUILD_RUSTFLAGS="${CARGO_BUILD_RUSTFLAGS:-} -C link-arg=-fuse-ld=lld"
+fi
+
 # Set CFLAGS
 export CFLAGS="${CFLAGS} -D_BSD_SOURCE"
 
