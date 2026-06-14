@@ -73,7 +73,6 @@ about:
     Zed is a high-performance, multiplayer code editor from the creators of Atom and Tree-sitter.
   license: Apache-2.0
   license_file:
-    - LICENSE-AGPL
     - LICENSE-APACHE
     - LICENSE-GPL
     - THIRDPARTY.yml
