@@ -228,6 +228,3 @@ Feedstock Maintainers
 * [@lucascolley](https://github.com/lucascolley/)
 * [@zelosleone](https://github.com/zelosleone/)
 
-
-<!-- dummy commit to enable rerendering -->
-
