@@ -30,7 +30,9 @@ export CARGO_INCREMENTAL=0
 if [[ ${target_platform} == "osx-arm64" ]]; then
   # Zed's macOS arm64 binary is large enough to hit branch-island issues in
   # the default conda-forge Darwin linker. Use LLD's Mach-O linker instead.
-  export CARGO_BUILD_RUSTFLAGS="${CARGO_BUILD_RUSTFLAGS:-} -C link-arg=-fuse-ld=lld"
+  # Zed's .cargo/config.toml sets target.'cfg(all())'.rustflags, which overrides
+  # CARGO_BUILD_RUSTFLAGS, so pass flags via the target-specific variable (merged).
+  export CARGO_TARGET_AARCH64_APPLE_DARWIN_RUSTFLAGS="${CARGO_BUILD_RUSTFLAGS:-} -C link-arg=-fuse-ld=lld"
 fi
 
 # Set CFLAGS
