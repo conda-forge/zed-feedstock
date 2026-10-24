@@ -27,12 +27,15 @@ fi
 export CARGO_PROFILE_RELEASE_STRIP=symbols
 export CARGO_INCREMENTAL=0
 
+# Zed's .cargo/config.toml sets target.'cfg(all())'.rustflags, which overrides
+# CARGO_BUILD_RUSTFLAGS, so pass flags via the target-specific variable (merged).
+# Headerpad is needed so rattler-build can rewrite install names/rpaths.
 if [[ ${target_platform} == "osx-arm64" ]]; then
   # Zed's macOS arm64 binary is large enough to hit branch-island issues in
   # the default conda-forge Darwin linker. Use LLD's Mach-O linker instead.
-  # Zed's .cargo/config.toml sets target.'cfg(all())'.rustflags, which overrides
-  # CARGO_BUILD_RUSTFLAGS, so pass flags via the target-specific variable (merged).
-  export CARGO_TARGET_AARCH64_APPLE_DARWIN_RUSTFLAGS="${CARGO_BUILD_RUSTFLAGS:-} -C link-arg=-fuse-ld=lld"
+  export CARGO_TARGET_AARCH64_APPLE_DARWIN_RUSTFLAGS="${CARGO_BUILD_RUSTFLAGS:-} -C link-arg=-fuse-ld=lld -C link-arg=-Wl,-headerpad_max_install_names"
+elif [[ ${target_platform} == "osx-64" ]]; then
+  export CARGO_TARGET_X86_64_APPLE_DARWIN_RUSTFLAGS="${CARGO_BUILD_RUSTFLAGS:-} -C link-arg=-Wl,-headerpad_max_install_names"
 fi
 
 # Set CFLAGS
