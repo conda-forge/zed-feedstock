@@ -21,7 +21,7 @@ macos_machine:
 rust_compiler:
 - rust
 rust_compiler_version:
-- '1.95'
+- 1.98.1
 target_platform:
 - osx-arm64
 zip_keys:
