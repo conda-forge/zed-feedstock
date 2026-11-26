@@ -1,5 +1,6 @@
-c_stdlib_version:          # [osx]
+c_stdlib_version:          # [osx or linux]
   - "14.2"                 # [osx]
+  - "2.28"                 # [linux]
 MACOSX_SDK_VERSION:        # [osx]
   - "14.2"                 # [osx]
 rust_compiler_version:

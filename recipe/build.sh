@@ -33,7 +33,10 @@ export CARGO_INCREMENTAL=0
 if [[ ${target_platform} == "osx-arm64" ]]; then
   # Zed's macOS arm64 binary is large enough to hit branch-island issues in
   # the default conda-forge Darwin linker. Use LLD's Mach-O linker instead.
-  export CARGO_TARGET_AARCH64_APPLE_DARWIN_RUSTFLAGS="${CARGO_BUILD_RUSTFLAGS:-} -C link-arg=-fuse-ld=lld -C link-arg=-Wl,-headerpad_max_install_names"
+  # Raise --slop_scale (default 256) so LLD inserts enough range-extension
+  # thunks; otherwise some BRANCH26 relocations end up out of range.
+  # See https://github.com/llvm/llvm-project/blob/llvmorg-23.1.6/lld/MachO/Options.td#L1108-L1114
+  export CARGO_TARGET_AARCH64_APPLE_DARWIN_RUSTFLAGS="${CARGO_BUILD_RUSTFLAGS:-} -C link-arg=-fuse-ld=lld -C link-arg=-Wl,--slop_scale=1024 -C link-arg=-Wl,-headerpad_max_install_names"
 elif [[ ${target_platform} == "osx-64" ]]; then
   export CARGO_TARGET_X86_64_APPLE_DARWIN_RUSTFLAGS="${CARGO_BUILD_RUSTFLAGS:-} -C link-arg=-Wl,-headerpad_max_install_names"
 fi
