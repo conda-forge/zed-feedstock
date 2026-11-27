@@ -45,13 +45,13 @@ export CFLAGS="${CFLAGS} -D_BSD_SOURCE"
 export ZED_UPDATE_EXPLANATION='Please use your package manager to update zed from conda-forge'
 
 # Build package
-cargo_config=()
+cargo_args=(build)
 if [[ ${target_platform} == linux-* ]]; then
   export CARGO_PROFILE_RELEASE_DEBUG=false
   "${BUILD_PREFIX}/bin/python" "${RECIPE_DIR}/extract-release-profile.py" .cargo/size-profile.toml
-  cargo_config=(--config .cargo/size-profile.toml)
+  cargo_args+=(--config .cargo/size-profile.toml)
 fi
-cargo "${cargo_config[@]}" build --release --package zed --package cli --target "${CARGO_BUILD_TARGET}"
+cargo "${cargo_args[@]}" --release --package zed --package cli --target "${CARGO_BUILD_TARGET}"
 
 # Install package
 mkdir -p "${PREFIX}/bin"
