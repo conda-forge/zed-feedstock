@@ -43,7 +43,7 @@ if errorlevel 1 (
     goto :cleanup
 )
 
-cargo install --root "%PREFIX%" --path crates/zed --locked --no-default-features --features "" --profile release
+cargo --config "%RECIPE_DIR%\size-profile.toml" install --root "%PREFIX%" --path crates/zed --locked --no-default-features --features "" --profile release
 if errorlevel 1 (
     set "BUILD_EXIT=!errorlevel!"
     goto :cleanup

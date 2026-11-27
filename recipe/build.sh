@@ -45,7 +45,12 @@ export CFLAGS="${CFLAGS} -D_BSD_SOURCE"
 export ZED_UPDATE_EXPLANATION='Please use your package manager to update zed from conda-forge'
 
 # Build package
-cargo build --release --package zed --package cli --target "${CARGO_BUILD_TARGET}"
+cargo_config=()
+if [[ ${target_platform} == linux-* ]]; then
+  export CARGO_PROFILE_RELEASE_DEBUG=false
+  cargo_config=(--config "${RECIPE_DIR}/size-profile.toml")
+fi
+cargo "${cargo_config[@]}" build --release --package zed --package cli --target "${CARGO_BUILD_TARGET}"
 
 # Install package
 mkdir -p "${PREFIX}/bin"
@@ -57,6 +62,12 @@ if [[ ${OSTYPE} == "darwin"* ]]; then
 else
     # https://github.com/zed-industries/zed/blob/bdedb18c300e71086a63dae1cacf3fe87c885fcf/crates/cli/src/main.rs#L416-L433
     install -m0755 target/${CARGO_BUILD_TARGET}/release/cli "${PREFIX}/bin/zed"
+fi
+
+# Strip the staged ELF files before packaging.
+if [[ ${target_platform} == linux-* ]]; then
+  "${BUILD_PREFIX}/bin/${HOST}-strip" --strip-all \
+    "${PREFIX}/lib/zed/zed-editor" "${PREFIX}/bin/zed"
 fi
 
 # Install conda activation scripts to set runtime env vars
