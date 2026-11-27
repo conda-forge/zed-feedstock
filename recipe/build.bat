@@ -13,6 +13,10 @@ set CARGO_PROFILE_RELEASE_STRIP=symbols
 set CARGO_PROFILE_RELEASE_LTO=thin
 set CARGO_PROFILE_RELEASE_CODEGEN_UNITS=1
 
+REM Extract the upstream release profile without its target settings.
+"%BUILD_PREFIX%\python.exe" "%RECIPE_DIR%\extract-release-profile.py" ".cargo\size-profile.toml"
+if errorlevel 1 exit /b 1
+
 REM Use temp directory for build artifacts to avoid path length issues
 set "TEMP_BUILD_DIR=%TEMP%\zed-build-%RANDOM%"
 set "TEMP_CARGO_HOME=C:\zc%RANDOM%"
@@ -43,7 +47,7 @@ if errorlevel 1 (
     goto :cleanup
 )
 
-cargo install --root "%PREFIX%" --path crates/zed --locked --no-default-features --features "" --profile release
+cargo --config ".cargo\size-profile.toml" install --root "%PREFIX%" --path crates/zed --locked --no-default-features --features "" --profile release
 if errorlevel 1 (
     set "BUILD_EXIT=!errorlevel!"
     goto :cleanup
