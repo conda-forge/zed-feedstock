@@ -48,7 +48,8 @@ export ZED_UPDATE_EXPLANATION='Please use your package manager to update zed fro
 cargo_config=()
 if [[ ${target_platform} == linux-* ]]; then
   export CARGO_PROFILE_RELEASE_DEBUG=false
-  cargo_config=(--config "${RECIPE_DIR}/size-profile.toml")
+  "${BUILD_PREFIX}/bin/python" "${RECIPE_DIR}/extract-release-profile.py" .cargo/size-profile.toml
+  cargo_config=(--config .cargo/size-profile.toml)
 fi
 cargo "${cargo_config[@]}" build --release --package zed --package cli --target "${CARGO_BUILD_TARGET}"
 
